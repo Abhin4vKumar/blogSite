@@ -4,10 +4,37 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Navbar from '@/src/navbar'
 import Footer from '@/src/footer'
+import { useEffect, useRef } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const appRef = useRef();
+  useEffect(()=>{
+    const moveGradient = (e)=>{
+      const winWidth = window.innerWidth;
+      const winHeight = window.innerHeight;
+
+      const mouseX = Math.round((e.pageX / winWidth) * 100);
+      const mouseY = Math.round((e.pageY / winHeight) * 100);
+
+      if(appRef){
+        appRef.current.style.setProperty(
+          '--mouse-x',
+          mouseX.toString() + "%"
+        )
+        appRef.current.style.setProperty(
+          '--mouse-y',
+          mouseY.toString() + "%"
+        )
+      }
+      
+    };
+    document.addEventListener("mousemove",moveGradient);
+    return function cleanup(){
+      document.removeEventListener("mousemove",moveGradient);
+    };
+  },[appRef]);
   return (
     <>
       <Head>
@@ -18,7 +45,8 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.center}>
-          <h1 style={{fontSize:"5em"}}>BlogPost</h1>
+          <div ref={appRef} className={styles.filterObj}></div>
+          <h1 style={{fontSize:"10em"}}>BlogPost</h1>
         </div>
 
         <div className={styles.grid}>

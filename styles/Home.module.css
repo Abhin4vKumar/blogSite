@@ -48,6 +48,8 @@
 
 .card {
   padding: 1rem 1.2rem;
+  margin-top: 20px;
+  cursor:default;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
@@ -74,22 +76,42 @@
 
 .center {
   display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
   justify-content: center;
   align-items: center;
   position: relative;
+  margin-top: -60px;
   padding: 4rem 0;
 }
 
-.center::before {
+/* .center::before {
   background: var(--secondary-glow);
   border-radius: 50%;
   width: 480px;
   height: 360px;
   margin-left: -400px;
   z-index: -1;
+} */
+/* resulting css */
+.filterObj{
+  width: 100%;
+  position:absolute;
+  z-index: -1;
+  height: 100%;
+  filter: contrast(130%) brightness(450%);
+  background: 
+	linear-gradient(128deg, rgba(0,0,255,1), rgba(150,7,236,0.47)),
+  radial-gradient(
+    at var(--mouse-x) var(--mouse-y),
+    rgba(255,255,255,0.5), rgba(0,0,0,0.5)
+  ),
+	url("data:image/svg+xml,%3Csvg viewBox='0 0 341 341' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4.3' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
-
-.center::after {
+/* resulting css */
+   
+/* .center::after {
   background: var(--primary-glow);
   width: 240px;
   height: 180px;
@@ -103,7 +125,7 @@
   position: absolute;
   filter: blur(45px);
   transform: translateZ(0);
-}
+} */
 
 .logo {
   position: relative;

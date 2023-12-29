@@ -21,6 +21,7 @@ export default function Navbar(){
         height:"60px",
         // background:"none",
         backgroundColor:"rgba(16,16,16,0.7)",
+        backdropFilter:"blur(4px)"
     };
     const ulStyle = {
         display:"flex",

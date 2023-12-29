@@ -21,7 +21,6 @@ const certificateSchema = new mongoose.Schema({
         },
         imgLink:{
             type:String,
-            required:true,
         }
     },
     user: {
