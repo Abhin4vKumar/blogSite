@@ -14,12 +14,10 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 //Route Imports
-const certificate = require("./routes/certificateRoute");
+const blog = require("./routes/blogRoute");
 const user = require("./routes/userRoute");
-const organisation = require("./routes/organisationRoute");
-app.use("/api/v1", certificate);
+app.use("/api/v1", blog);
 app.use("/api/v1", user);
-app.use("/api/v1", organisation);
 // app.use("/api/v1", require("./routes/linkIncRoute"))
 //Middleware for error
 app.use(errorMiddleware);

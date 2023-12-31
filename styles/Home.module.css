@@ -103,6 +103,8 @@
   filter: contrast(130%) brightness(450%);
   background: 
 	linear-gradient(128deg, rgba(0,0,255,1), rgba(150,7,236,0.47)),
+  
+	/* linear-gradient(128deg, rgb(49, 7, 236), rgba(150,7,236,0.47)), */
   radial-gradient(
     at var(--mouse-x) var(--mouse-y),
     rgba(255,255,255,0.5), rgba(0,0,0,0.5)

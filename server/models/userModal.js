@@ -5,7 +5,12 @@ const validator = require("validator");
 const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
-
+    userName:{
+        type:String,
+        required:[true, "Please Enter Username"],
+        maxLength: [30, "Username cannot Exceed 30 chars"],
+        minLength: [4, "Username should have more than 3 chars"]
+    },
     name: {
         type: String,
         required: [true, "Please Enter Name"],
@@ -24,6 +29,12 @@ const userSchema = new mongoose.Schema({
         select: false,
         minLength: [8, "Password Should be greater than 8"]
     },
+    upVoted:[
+        {
+            type:mongoose.Schema.ObjectId,
+            ref:'Blogs'
+        }
+    ],
     avatar: {
         status: {
             type: Boolean,

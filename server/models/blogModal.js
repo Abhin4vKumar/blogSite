@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const certificateSchema = new mongoose.Schema({
+const blogSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -29,11 +29,35 @@ const certificateSchema = new mongoose.Schema({
             ref: "User",
             required:true
         },
-        name:{
+        userName:{
             type:String,
             required:true,
         }
     },
+    upVotes:{
+        type:Number,
+        default:0,
+        required:true,
+    },
+    comments:[
+        {
+            content:{
+                type:String,
+                required:true
+            },
+            user: {
+                user_id:{
+                    type: mongoose.Schema.ObjectId,
+                    ref: "User",
+                    required:true
+                },
+                userName:{
+                    type:String,
+                    required:true,
+                }
+            }
+        }
+    ],
     date: {
         type: Date,
         default: Date.now,
@@ -46,4 +70,4 @@ const certificateSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Certificate", certificateSchema);
+module.exports = mongoose.model("Blogs", blogSchema);

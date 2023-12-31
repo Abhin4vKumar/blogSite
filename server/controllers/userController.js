@@ -6,10 +6,17 @@ const sendEmail = require("../utils/sendMail");
 const crypto = require("crypto");
 
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-    const { name, acc_no , email, password , phoneNumber} = req.body;
-
+    const { name,userName ,email, password} = req.body;
+    const data = await User.findOne({email});
+    if(data){
+        return next(new ErrorHandler("Email already Exists", 401));
+    }
+    const data2 = await User.findOne({userName});
+    if(data2){
+        return next(new ErrorHandler("Username already Exists", 401));
+    }
     const user = await User.create({
-        name, acc_no ,email, password,phoneNumber, avatar: {
+        name,email,userName, password, avatar: {
             url: "profilepicUrl"
         }
     });
@@ -117,8 +124,15 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
     sendToken(user, 200, res);
 });
-
+//need to work on this
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
+    const user = await User.findOne({userName:req.params.usr});
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
+exports.getMyDetails = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.user._id);
     res.status(200).json({
         success: true,
@@ -145,8 +159,20 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     const newUserData = {
         name: req.body.name,
         email: req.body.email,
-        phoneNumber:req.body.phoneNumber,
+        userName:req.body.userName,
         avatar:{url:req.body.profilePicUrl}
+    }
+    const data = await User.findOne({email:newUserData.email});
+    if(data){
+        if(data._id != req.user._id){
+            return next(new ErrorHandler("Email already Exists", 401));
+        }
+    }
+    const data2 = await User.findOne({userName:newUserData.userName});
+    if(data2){
+        if(data2._id != req.user._id){
+            return next(new ErrorHandler("Username already Exists", 401));
+        }
     }
     //we will add cloudinary later
     const user = await User.findByIdAndUpdate(req.user._id, newUserData, {
@@ -156,5 +182,6 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     });
     res.status(200).json({
         success: true,
+        user
     });
 });
