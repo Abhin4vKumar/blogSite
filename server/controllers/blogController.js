@@ -1,5 +1,3 @@
-const Certificate = require("../models/blogModal");
-
 const User = require("../models/userModal");
 const ErrorHandler = require("../utils/errorhandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -7,17 +5,76 @@ const ApiFeatures = require("../utils/apiFeatures");
 const Blogs = require("../models/blogModal");
 
 exports.newBlog = catchAsyncErrors(async (req, res, next) => {
-    
+    const {name , desc , content} = req.body;
+    const usero = await User.findById(req.user._id);
+    const data = {
+        name , desc , content,
+        user:{
+            user_id: usero._id,
+            userNameL:usero.userName
+        }
+    }
+    const dat = await Blogs.create(data);
     res.status(201).json({
         success: true,
-        request
+        blog : dat
     })
 });
 exports.commentBlog = catchAsyncErrors(async (req, res, next) => {
-    
+    const blg = await Blogs.findById(req.params.id);
+    if(!blg){
+        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+    }
+    const data = {
+        comments:blg.comments,
+    }
+    const commentObj = {
+        cId:data.comments.length() + 1,
+        content:req.body.content,
+        user:{
+            user_id:req.user._id,
+            userName:req.user.userName
+        },
+    }
+    data.comments.push(commentObj);
+    const dat = await Blogs.findByIdAndUpdate(req.params.id , {comments:data.comments} ,{
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
     res.status(201).json({
         success: true,
-        request
+        message:"Comment Added"
+    })
+});
+exports.deleteComment = catchAsyncErrors(async (req, res, next) => {
+    const blg = await Blogs.findById(req.params.id);
+    if(!blg){
+        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+    }
+    const data = {
+        comments:blg.comments,
+        commentss:[]
+    }
+    const flag = 0;
+    data.comments.forEach((e)=>{
+        if(e.cId == req.params.cId){
+            flag = 1;
+        }else{
+            commentss.push(e);
+        }
+    })
+    if(flag == 0){
+        return next(new ErrorHandler({message:"Comment does not exists" , statusCode:404}));
+    }
+    const dat = await Blogs.findByIdAndUpdate(req.params.id , {comments:data.commentss} ,{
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+    res.status(201).json({
+        success: true,
+        message:"Comment Deleted"
     })
 });
 exports.getAllBlogs = catchAsyncErrors(async (req, res, next) => {
@@ -25,159 +82,104 @@ exports.getAllBlogs = catchAsyncErrors(async (req, res, next) => {
     const blogsCount = await Blogs.countDocuments();
     const apiFeature = new ApiFeatures(Blogs.find(), req.query).search().filter().pagination(resultPerPage)
     const Blogss = await apiFeature.query;
-    res.status(200).json({ success: true, Blogss, blogsCount , resultPerPage})
+    res.status(200).json({ success: true, blogs: Blogss, blogsCount , resultPerPage})
 });
 //Need to work on this
 exports.getMyBlogs = catchAsyncErrors(async (req, res, next) => {
     const resultPerPage = 0;
     const blogsCount = await Blogs.countDocuments();
     const UserObj = req.user;
-    const apiFeature = new ApiFeatures(Blogs.find({user:{user_id,name}}), req.query).search().filter().pagination(resultPerPage)
-    const certificates = await apiFeature.query;
-    res.status(200).json({ success: true, certificates, certificatesCount , resultPerPage})
+    const apiFeature = new ApiFeatures(Blogs.find({user:{user_id:UserObj._id,userName:UserObj.userName}}), req.query).search().filter().pagination(resultPerPage)
+    const Blogss = await apiFeature.query;
+    res.status(200).json({ success: true, blogs: Blogss, blogsCount , resultPerPage})
 });
 exports.deleteBlog = catchAsyncErrors(async (req, res, next) => {
-    const currOrg = await Organisation.findById(req.user._id);
-    const certificate = await Certificate.findById(req.body.certId);
-    if (!certificate) {
-        return next(new ErrorHandler({ message: "Certificate not Found", statusCode: 404 }))
-    };
-    if (!currOrg){
-        return next(new ErrorHandler({message: "Organisation not Found" , statusCode:404}))
+    const blg = await Blogs.findById(req.params.id);
+    if(!blg){
+        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
     }
-    if(currOrg._id.toString != certificate.organisation.org_id.toString){
-        return next(new ErrorHandler({ message: "Access Denied!", statusCode: 403 }))
-    };
-    const certificate_ = await Certificate.findByIdAndUpdate(req.body.certId, {active:false}, {
-        new:true,
-        runValidators: true,
-        useFindAndModify: false,
-    });
+    const dat = await Blogs.findByIdAndRemove(req.params.id);
     return res.status(200).json({
         success: true,
-        message: "Certificate Revoked"
+        message: "Blog Deleted"
     })
 });
 exports.getBlog = catchAsyncErrors(async (req, res, next) => {
-    const shareToOrg = await Organisation.findById(req.body.orgId);
-    const certificate = await Certificate.findById(req.body.certId);
-    
-    if (!certificate) {
-        return next(new ErrorHandler({ message: "Certificate not Found", statusCode: 404 }))
-    };
-    if (!shareToOrg){
-        return next(new ErrorHandler({message: "Organisation not Found" , statusCode:404}))
+    const blg = await Blogs.findById(req.params.id);
+    if(!blg){
+        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
     }
-    let indexX=0
-    let found=false;
-    let alreadyHadAccess=false;
-    certificate.accessTo.forEach((element,index) => {
-        if(element.organisation.acc_no == shareToOrg.acc_no){
-            if(element.active){
-                alreadyHadAccess=true;
-            }
-            found=true;
-            indexX=index;
-        }
-    });
-    if(alreadyHadAccess){
-        return res.status(200).json({
-            success: true,
-            message: "Access Shared"
-        })
-    }
-    let newAccessObj = {
-        accessTo:certificate.accessTo
-    }
-    let accessObj = {
-        organisation:{
-            name:shareToOrg.name,
-            org_id:shareToOrg._id,
-            acc_no:shareToOrg.acc_no
-        },
-        active:true,
-    }
-    if(!found){
-        newAccessObj.accessTo.push(accessObj);
-    }else{
-        newAccessObj.accessTo[indexX].active = true;
-    }
-    const certificate_ = await Certificate.findByIdAndUpdate(req.body.certId, newAccessObj, {
-        new:true,
-        runValidators: true,
-        useFindAndModify: false,
-    });
-    console.log(certificate_);
     return res.status(200).json({
         success: true,
-        message: "Access Shared"
+        blog:blg
     })
 });
 
 
 exports.updateBlog = catchAsyncErrors(async (req, res, next) => {
-    console.log("im here69");
-    console.log(req.body.ipfsLink);
-    const user = await User.findOne({acc_no:req.body.userId});
-    console.log(user);
-    const org = await Organisation.findById(req.user.workOrganisation);
-    if (!user) {
-        return next(new ErrorHandler(`User does not exist with Id: ${req.body.userId}`));
+    const blg = await Blogs.findById(req.params.id);
+    if(!blg){
+        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
     }
-    if (!org) {
-        return next(new ErrorHandler(`Organisation does not exist with Id: ${req.params.id}`));
-    }
-
-    const userObj = {
-        user_id:user._id,
-        acc_no:user.acc_no
-    }
-    const organisationObj = {
-        name:org.name,
-        org_id:org._id,
-        acc_no:org.acc_no
-    }
-    req.body.user = userObj;
-    req.body.organisation = organisationObj;
-    const request = await Certificate.create(req.body);
-
-    
+    const {name , desc , content} = req.body;
+    const dat = await Blogs.findByIdAndUpdate(req.params.id , {name , desc , content , 
+    date:Date.now()},{
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
     res.status(201).json({
         success: true,
-        request
+        message:"Blog Updated"
     })
 });
 
 exports.upVote = catchAsyncErrors(async (req, res, next) => {
-    console.log("im here69");
-    console.log(req.body.ipfsLink);
-    const user = await User.findOne({acc_no:req.body.userId});
-    console.log(user);
-    const org = await Organisation.findById(req.user.workOrganisation);
-    if (!user) {
-        return next(new ErrorHandler(`User does not exist with Id: ${req.body.userId}`));
+    const blg = await Blogs.findById(req.params.id);
+    if(!blg){
+        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
     }
-    if (!org) {
-        return next(new ErrorHandler(`Organisation does not exist with Id: ${req.params.id}`));
+    const data = {
+        upVoted:req.user.upVoted,
+        upVotedd:[]
+    };
+    //check if usr already upvoted
+    const downVote = 0;
+    data.upVoted.forEach((e)=>{
+        if(e == blg._id){
+            downVote = 1;
+        }else{
+            data.upVotedd.push(e);
+        }
+    });
+    if(downVote){
+        const dat1 = await Blogs.findByIdAndUpdate(req.params.id , {upVotes:blg.upVotes-1},{
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        });
+        const dat2 = await User.findByIdAndUpdate(req.user._id , {upVoted:data.upVotedd},{
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        });
+    }else{
+        data.upVoted.push(blg._id);
+        const dat1 = await Blogs.findByIdAndUpdate(req.params.id , {upVotes:blg.upVotes+1},{
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        });
+        const dat2 = await User.findByIdAndUpdate(req.user._id , {upVoted:data.upVoted},{
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        });
     }
-
-    const userObj = {
-        user_id:user._id,
-        acc_no:user.acc_no
-    }
-    const organisationObj = {
-        name:org.name,
-        org_id:org._id,
-        acc_no:org.acc_no
-    }
-    req.body.user = userObj;
-    req.body.organisation = organisationObj;
-    const request = await Certificate.create(req.body);
-
-    
+    const msg = downVote == 1? "Down Voted": "Up Voted";
     res.status(201).json({
         success: true,
-        request
+        message:msg
     })
 });
 
