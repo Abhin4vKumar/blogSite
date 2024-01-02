@@ -41,10 +41,6 @@ const blogSchema = new mongoose.Schema({
     },
     comments:[
         {
-            cId:{
-                type:Number,
-                required:true
-            },
             content:{
                 type:String,
                 required:true

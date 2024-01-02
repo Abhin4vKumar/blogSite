@@ -11,7 +11,7 @@ exports.newBlog = catchAsyncErrors(async (req, res, next) => {
         name , desc , content,
         user:{
             user_id: usero._id,
-            userNameL:usero.userName
+            userName:usero.userName
         }
     }
     const dat = await Blogs.create(data);
@@ -23,13 +23,12 @@ exports.newBlog = catchAsyncErrors(async (req, res, next) => {
 exports.commentBlog = catchAsyncErrors(async (req, res, next) => {
     const blg = await Blogs.findById(req.params.id);
     if(!blg){
-        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+        return next(new ErrorHandler("Blog does not exists" , 404))
     }
     const data = {
         comments:blg.comments,
     }
     const commentObj = {
-        cId:data.comments.length() + 1,
         content:req.body.content,
         user:{
             user_id:req.user._id,
@@ -50,22 +49,33 @@ exports.commentBlog = catchAsyncErrors(async (req, res, next) => {
 exports.deleteComment = catchAsyncErrors(async (req, res, next) => {
     const blg = await Blogs.findById(req.params.id);
     if(!blg){
-        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+        return next(new ErrorHandler("Blog does not exists" , 404))
     }
     const data = {
         comments:blg.comments,
         commentss:[]
     }
-    const flag = 0;
+    let flag = 0;
     data.comments.forEach((e)=>{
-        if(e.cId == req.params.cId){
-            flag = 1;
+        console.log(e._id.toString() == req.params.cid);
+        console.log(e._id.toString());
+        console.log(req.params.cid);
+        console.log(typeof(e._id.toString()));
+        console.log(typeof(req.params.cid));
+        if(e._id.toString() == req.params.cid){
+            if(e.user.userName == req.user.userName){
+                flag = 1;
+            }else{
+                data.commentss.push(e);
+            }
         }else{
-            commentss.push(e);
+            data.commentss.push(e);
         }
     })
+    console.log(flag);
     if(flag == 0){
-        return next(new ErrorHandler({message:"Comment does not exists" , statusCode:404}));
+        console.log(flag);
+        return next(new ErrorHandler("Comment does not exists" , 404));
     }
     const dat = await Blogs.findByIdAndUpdate(req.params.id , {comments:data.commentss} ,{
         new: true,
@@ -96,9 +106,9 @@ exports.getMyBlogs = catchAsyncErrors(async (req, res, next) => {
 exports.deleteBlog = catchAsyncErrors(async (req, res, next) => {
     const blg = await Blogs.findById(req.params.id);
     if(!blg){
-        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+        return next(new ErrorHandler("Blog does not exists" , 404))
     }
-    const dat = await Blogs.findByIdAndRemove(req.params.id);
+    const dat = await Blogs.findOneAndDelete(req.params.id);
     return res.status(200).json({
         success: true,
         message: "Blog Deleted"
@@ -107,7 +117,7 @@ exports.deleteBlog = catchAsyncErrors(async (req, res, next) => {
 exports.getBlog = catchAsyncErrors(async (req, res, next) => {
     const blg = await Blogs.findById(req.params.id);
     if(!blg){
-        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+        return next(new ErrorHandler("Blog does not exists" , 404))
     }
     return res.status(200).json({
         success: true,
@@ -119,7 +129,7 @@ exports.getBlog = catchAsyncErrors(async (req, res, next) => {
 exports.updateBlog = catchAsyncErrors(async (req, res, next) => {
     const blg = await Blogs.findById(req.params.id);
     if(!blg){
-        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+        return next(new ErrorHandler("Blog does not exists" , 404))
     }
     const {name , desc , content} = req.body;
     const dat = await Blogs.findByIdAndUpdate(req.params.id , {name , desc , content , 
@@ -137,16 +147,16 @@ exports.updateBlog = catchAsyncErrors(async (req, res, next) => {
 exports.upVote = catchAsyncErrors(async (req, res, next) => {
     const blg = await Blogs.findById(req.params.id);
     if(!blg){
-        return next(new ErrorHandler({message:"Blog does not exists" , statusCode:404}))
+        return next(new ErrorHandler("Blog does not exists" , 404))
     }
     const data = {
         upVoted:req.user.upVoted,
         upVotedd:[]
     };
     //check if usr already upvoted
-    const downVote = 0;
-    data.upVoted.forEach((e)=>{
-        if(e == blg._id){
+    let downVote = 0;
+    data.upVoted.forEach((e,i)=>{
+        if(e.toString() == blg._id.toString()){
             downVote = 1;
         }else{
             data.upVotedd.push(e);

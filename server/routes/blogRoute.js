@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.route("/allblogs").get(getAllBlogs);
 router.route("/myblogs").get(isAuthenticatedUser , getMyBlogs);
-router.route("/blog/:id").post(getBlog);
-router.route("/blog/up/:id").get(upVote);
-router.route("/blog/comment/:id").post(commentBlog);
-router.route("/blog/comment/del/:id").get(deleteComment);
+router.route("/blog/:id").get(getBlog);
+router.route("/blog/up/:id").get(isAuthenticatedUser,upVote);
+router.route("/blog/comment/:id").post(isAuthenticatedUser,commentBlog);
+router.route("/blog/comment/del/:id/:cid").get(isAuthenticatedUser,deleteComment);
 router.route("/blog/new").post(isAuthenticatedUser, newBlog);
-router.route("/blog/delete/:id").delete(isAuthenticatedUser, deleteBlog);
-router.route("/blog/update/:id").put(isAuthenticatedUser, updateBlog);
+router.route("/blog/delete/:id").get(isAuthenticatedUser, deleteBlog);
+router.route("/blog/update/:id").post(isAuthenticatedUser, updateBlog);
 
 module.exports = router
