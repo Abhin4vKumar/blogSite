@@ -1,93 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link  from 'next/link'
-import styles from '@/styles/navbar.module.css'
 
 export default function Navbar(){
-    const [bgButtonColor , setBgButtonColor] = useState('transparent');
-    const [buttonColor , setButtonColor] = useState('white');
-    const divStyle = {
-        height:"100%",
-        display: "flex",
-        alignItems:"center",
-        cursor:"pointer"
+    const appRef = useRef();
+    const setNav = ()=>{
+        try{
+            if(appRef){
+                appRef.current.style.setProperty(
+                    '--tw-translate-y',
+                    "-10px"
+                )
+                appRef.current.style.setProperty(
+                    '--tw-translate-x',
+                    "-50%"
+                )
+            }  
+        }catch(error){
+            console.error(error);
+        }
     }
-    const navBarStyle = {
-        display:"flex",
-        color:"white",
-        position:"fixed",
-        fontFamily:"sans-serif",
-        width:"100%",
-        zIndex:'10',
-        height:"60px",
-        // background:"none",
-        backgroundColor:"rgba(16,16,16,0.7)",
-        backdropFilter:"blur(4px)"
-    };
-    const ulStyle = {
-        display:"flex",
-        listStyle:"none",
-        listStyleType:"none",
-        alignItems:"center",
-        gap:"10px",
-        height:"100%"
-    }
-    const liStyle = {
-        display :"block",
-        padding:"10px 20px",
-        textAlign:"center",
-        alignItems:"center",
-        justifyContent:"center",
-        gap:"10px",
-        transition:"0.3s ease",
-        border:"none",
-        borderBottom:"2px solid transparent",
-    }
-    const buttonStyle = {
-        display:"block",
-        background:"none",
-        backgroundColor:bgButtonColor,
-        border:"1px solid white",
-        color:buttonColor,
-        padding:"12px 20px",
-        outline:"none",
-        marginRight:"20px",
-        transition:"0.3s ease",
-        cursor:"pointer"
-    }
-    const navOptionsStyle = {
-        position:"absolute",
-        display:"flex",
-        gap:"10px",
-        top:"0",
-        right:"0"
-    }
-    const handleMouseEnter = (e)=>{
-        setBgButtonColor('red');
-        // setButtonColor('black');
-    }
-    const handleMouseLeave = (e)=>{
-        setBgButtonColor('transparent');
-        setButtonColor('white');
-    }
-    
+    useEffect(()=>{
+        setNav();
+    },[appRef]);
   return (
     <>
-    <div className={styles.navBlurObj}></div>
-    <nav className={styles.navbar} style={navBarStyle}>
-        <div className='navLogo' style={{...divStyle,marginLeft:"20px"}}>
-            <Link href={{pathname:"/",}} style={{fontSize:"2em"}}>BlogPost</Link>
+    <div ref={appRef} className={"block fixed bg-[rgba(16,16,16,0.9)] blur w-[200vw] h-[70px] transform z-10"}></div>
+    <nav className={"flex text-white fixed font-sans w-[100%] z-10 h-[60px] bg-[rgba(16,16,16,0.7)] backdrop:blur-sm"}>
+        <div className='navLogo ml-[20px] h-[100%] flex items-center cursor-pointer'>
+            <Link href={{pathname:"/",}} className="text-3xl" >BlogPost</Link>
         </div>
-        <div className='navOptions' style={{...divStyle , ...navOptionsStyle}}>
-            <div className='navButtons' style={divStyle}>
-                <ul className={styles.ulNavItem} style={ulStyle}>
-                    <li><Link style={liStyle} href={{pathname:"/",}}>Home</Link></li>
-                    <li><Link style={liStyle} href={{pathname:"/about",}}>About</Link></li>
-                    <li><Link style={liStyle} href={{pathname:"/blogs",}}>Blogs</Link></li>
+        <div className='navOptions h-[100%] flex items-center cursor-pointer absolute gap-[10px] top-0 right-0'>
+            <div className='navButtons h-[100%] flex items-center cursor-pointer'>
+                <ul className={"flex list-none items-center gap-0 h-[100%]"}>
+                    <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/",}}>Home</Link></li>
+                    <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/about",}}>About</Link></li>
+                    <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/blogs",}}>Blogs</Link></li>
                 </ul>
             </div>
-            <div className='navLogin' style={divStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className='navLogin h-[100%] flex items-center cursor-pointer'>
                 <Link href={`/login`}>
-                    <button style={buttonStyle}>Login</button>
+                    <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-[#FFC300] hover:text-black">Login</button>
                 </Link>
             </div>
         </div>

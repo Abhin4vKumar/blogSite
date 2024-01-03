@@ -50,7 +50,7 @@ export default function Blogs(){
       <main className={`${styles.main} ${inter.className}`}>
         <div style={{display:"flex",flexDirection:"column"}}>
           <h1 style={{alignSelf:"center"}} className='text-8xl font-semibold font-mono mb-[50px]'>Blogs</h1>
-          <InfiniteScroll style={{overflow:''}}
+          <InfiniteScroll style={{overflow:'unset'}}
                   dataLength={items.length} //This is important field to render the next data
                   next={fetchMoreData}
                   hasMore={count<blogsCount}

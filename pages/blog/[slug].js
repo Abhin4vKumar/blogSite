@@ -5,13 +5,25 @@ import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import Link from 'next/link'
 import style2 from '@/styles/About.module.css'
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 const inter = Inter({ subsets: ['latin'] })
 const slug = () => {
+    const [items , setItems] = useState([]);
     const router = useRouter();
+    const [count , setCount] = useState(0);
     const { slug } = router.query;
     const [blog , setBlog] = useState(null);
     const [loading , setLoading] = useState(true);
+    const [comment , setComment] = useState("");
     console.log(slug);
+    const handleSubmit = async(e)=>{
+        e.preventDefault();
+        console.log(comment);
+    }
+    const handleChange = (e)=>{
+        setComment(e.target.value);
+    }
     const fetchData = async()=>{
         try{
             const res = await fetch(`http://localhost:4000/api/v1/blog/${slug}`);
@@ -19,6 +31,12 @@ const slug = () => {
             if(data.success){
                 setBlog(data.blog);
                 setLoading(false);
+                setItems(data.blog.comments.slice(0,count+5));
+                console.log(data.blog.comments.slice(0,count+5));
+                setCount((prev)=>{
+                    return prev+5;
+                  });
+                console.log(count+5);
             }else{
                 console.error(data.message);
                 router.replace('/');
@@ -50,17 +68,52 @@ const slug = () => {
                     <p className={style2.para + " " + ""}>{blog.desc}</p>
                     <p className={style2.para + " " + ""}>{blog.content}</p>
                 </div>
-                <div className='flex py-[25px] pb-[5px] flex-col border border-gray-700 mt-[20px] min-h-[500px] w-[90vw]'>
+                <div className='flex py-[25px] pb-[5px] flex-col border border-gray-700 mt-[20px] h-fit w-[90vw]'>
                     <h1 className='text-3xl self-center'>Comments</h1>
                     <div className='flex flex-col w-[100%] px-[20px] py-[20px] gap-[10px] border-t border-gray-700 mt-[25px]'>
-                        {blog.comments.map((i, index) => (
+                    <InfiniteScroll style={{overflow:'unset'}}
+                            dataLength={items.length} //This is important field to render the next data
+                            next={fetchData}
+                            hasMore={count<blog.comments.length}
+                            loader={<h4>Loading...</h4>}
+                            endMessage={
+                                <p style={{ textAlign: 'center' }} className='mt-[20px]'>
+                                <b className='font-mono'>{items.length == 0 ? "No Blogs right now :( " : "Yay! You have seen it all"}</b>
+                                </p>
+                            }
+                            // below props only if you need pull down functionality
+                            // refreshFunction={this.refresh}
+                            // pullDownToRefresh
+                            // pullDownToRefreshThreshold={50}
+                            // pullDownToRefreshContent={
+                            //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+                            // }
+                            // releaseToRefreshContent={
+                            //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+                            // }
+                            >
+                            {items.map((i, index) => (
+                                <div className='flex flex-col w-[100%] px-[10px] gap-[10px] first:mt-[0px] mt-[15px] border-b pb-[10px] border-gray-700' i={i} key={index}>
+                                    <h3 className='text-slate-500' >{i.user.userName}</h3>
+                                    <p className='break-words overflow-auto h-fit min-h-[20px]'>{i.content}</p>
+                                </div>
+                            ))}
+                    </InfiniteScroll>
+                        {/* {blog.comments.map((i, index) => (
                             <div className='flex flex-col w-[100%] px-[10px] gap-[10px] border-b pb-[10px] border-gray-700' i={i} key={index}>
                                 <h3 className='text-slate-500' >{i.user.userName}</h3>
-                                <p className='overflow-auto h-fit min-h-[20px]'>{i.content}</p>
+                                <p className='break-words overflow-auto h-fit min-h-[20px]'>{i.content}</p>
                             </div>
-                        ))}
-                        
+                        ))} */}
                     </div>
+                </div>
+                <div className='flex py-[25px] pb-[5px] flex-col border border-gray-700 mt-[20px] h-fit w-[90vw]'>
+                <h1 className='text-3xl self-center'>Add Comment</h1>
+                    <form className=' relative flex flex-col w-[100%] px-[20px] py-[20px] gap-[10px] border-t border-gray-700 mt-[25px]'>
+                        <label for="message" class="block mb-2 text-sm font-medium text-white ">Your message</label>
+                        <textarea id="message" onChange={handleChange} rows="4" class="block p-2.5 w-full text-sm text-white bg-transparent border border-gray-600 placeholder-gray-400 outline-none" placeholder="Write your thoughts here..."></textarea>
+                        <button className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-[#FFC300] hover:text-black px-[20px] py-[10px]' type='submit' onClick={handleSubmit}>submit</button>
+                    </form>
                 </div>
             </main>
         </>

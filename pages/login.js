@@ -28,7 +28,6 @@ function LoginPage() {
   const [loginPassword, setLPassword] = useState('');
   const [name , setName] = useState('');
   const [confirmPassword , setConfirmPassword] = useState('');
-  const [phoneNumber , setPhoneNumber] = useState('');
   const [registerUsername, setRUsername] = useState('');
   const [registerPassword, setRPassword] = useState('');
   const [activeState , setAS] = useState('');
