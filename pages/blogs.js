@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '@/src/navbar'
+
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import Footer from '@/src/footer'
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Blog from '@/src/blog';
 

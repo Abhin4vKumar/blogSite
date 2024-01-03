@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import Navbar from '@/src/navbar'
+
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import Footer from '@/src/footer'
+
 
 const inter = Inter({ subsets: ['latin'] })
 

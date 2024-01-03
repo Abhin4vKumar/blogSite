@@ -1,5 +1,4 @@
 import '@/styles/globals.css'
-import '@/styles/navbar.module.css'
 import '@/styles/login.css';
 import Navbar from '@/src/navbar';
 import Footer from '@/src/footer';

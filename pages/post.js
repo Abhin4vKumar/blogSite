@@ -1,5 +1,3 @@
-import Footer from '@/src/footer'
-import Navbar from '@/src/navbar'
 import React from 'react'
 
 const Post = () => {

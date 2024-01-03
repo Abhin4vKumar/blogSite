@@ -27,7 +27,7 @@ export default function Navbar(){
     <div ref={appRef} className={"block fixed bg-[rgba(16,16,16,0.9)] blur w-[200vw] h-[70px] transform z-10"}></div>
     <nav className={"flex text-white fixed font-sans w-[100%] z-10 h-[60px] bg-[rgba(16,16,16,0.7)] backdrop:blur-sm"}>
         <div className='navLogo ml-[20px] h-[100%] flex items-center cursor-pointer'>
-            <Link href={{pathname:"/",}} className="text-3xl" >BlogPost</Link>
+            <Link href={{pathname:"/",}} className="text-3xl font-bold" >BlogPost</Link>
         </div>
         <div className='navOptions h-[100%] flex items-center cursor-pointer absolute gap-[10px] top-0 right-0'>
             <div className='navButtons h-[100%] flex items-center cursor-pointer'>
