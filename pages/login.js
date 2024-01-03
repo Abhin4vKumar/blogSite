@@ -1,14 +1,6 @@
-import Footer from '@/src/footer';
-import Navbar from '@/src/navbar';
 import Head from 'next/head';
 import React, { Fragment , useRef ,useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { useDispatch, useSelector } from "react-redux";
-// import { login , register } from '../actions/userAction';
-// import { useAlert } from "react-alert";
-// import Loader from './Loader';
 
-// import './login.css';
 function LoginPage() {
     // const navigate = useNavigate()
     // const dispatch = useDispatch();

@@ -2,8 +2,6 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import Navbar from '@/src/navbar'
-import Footer from '@/src/footer'
 import { useEffect, useRef } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })

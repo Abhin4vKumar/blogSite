@@ -16,10 +16,8 @@ const slug = () => {
     const [blog , setBlog] = useState(null);
     const [loading , setLoading] = useState(true);
     const [comment , setComment] = useState("");
-    console.log(slug);
     const handleSubmit = async(e)=>{
         e.preventDefault();
-        console.log(comment);
     }
     const handleChange = (e)=>{
         setComment(e.target.value);
@@ -32,18 +30,15 @@ const slug = () => {
                 setBlog(data.blog);
                 setLoading(false);
                 setItems(data.blog.comments.slice(0,count+5));
-                console.log(data.blog.comments.slice(0,count+5));
                 setCount((prev)=>{
                     return prev+5;
                   });
-                console.log(count+5);
             }else{
                 console.error(data.message);
                 router.replace('/');
             }
         }catch(error){
             console.error(error);
-            
         }
     }
     useEffect(()=>{
@@ -72,7 +67,7 @@ const slug = () => {
                     <h1 className='text-3xl self-center'>Comments</h1>
                     <div className='flex flex-col w-[100%] px-[20px] py-[20px] gap-[10px] border-t border-gray-700 mt-[25px]'>
                     <InfiniteScroll style={{overflow:'unset'}}
-                            dataLength={items.length} //This is important field to render the next data
+                            dataLength={items.length}
                             next={fetchData}
                             hasMore={count<blog.comments.length}
                             loader={<h4>Loading...</h4>}
@@ -80,18 +75,7 @@ const slug = () => {
                                 <p style={{ textAlign: 'center' }} className='mt-[20px]'>
                                 <b className='font-mono'>{items.length == 0 ? "No Blogs right now :( " : "Yay! You have seen it all"}</b>
                                 </p>
-                            }
-                            // below props only if you need pull down functionality
-                            // refreshFunction={this.refresh}
-                            // pullDownToRefresh
-                            // pullDownToRefreshThreshold={50}
-                            // pullDownToRefreshContent={
-                            //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-                            // }
-                            // releaseToRefreshContent={
-                            //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-                            // }
-                            >
+                            }>
                             {items.map((i, index) => (
                                 <div className='flex flex-col w-[100%] px-[10px] gap-[10px] first:mt-[0px] mt-[15px] border-b pb-[10px] border-gray-700' i={i} key={index}>
                                     <h3 className='text-slate-500' >{i.user.userName}</h3>
@@ -99,12 +83,6 @@ const slug = () => {
                                 </div>
                             ))}
                     </InfiniteScroll>
-                        {/* {blog.comments.map((i, index) => (
-                            <div className='flex flex-col w-[100%] px-[10px] gap-[10px] border-b pb-[10px] border-gray-700' i={i} key={index}>
-                                <h3 className='text-slate-500' >{i.user.userName}</h3>
-                                <p className='break-words overflow-auto h-fit min-h-[20px]'>{i.content}</p>
-                            </div>
-                        ))} */}
                     </div>
                 </div>
                 <div className='flex py-[25px] pb-[5px] flex-col border border-gray-700 mt-[20px] h-fit w-[90vw]'>

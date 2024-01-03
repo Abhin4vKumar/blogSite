@@ -17,26 +17,21 @@ export default function Blogs(){
     fetchMoreData();
   },[])
   const fetchMoreData = async () => {
-    // a fake async api call like which sends
-    // 20 more records in 1.5 secs
     try{
       const response = await fetch("http://localhost:4000/api/v1/allblogs");
       const data = await response.json();
       const {success , blogs , blogsCount,resultPerPage} = data;
       if(success){
-        console.log("success");
         setBlogsCount(blogsCount);
         setItems(blogs.slice(0,count+5));
         setCount((prev)=>{
           return prev+5;
         });
-        console.log(count+5);
-        
       }else{
-        console.error("FETCH ERROR SUCCESS");
+        console.error(data.message);
       }
     }catch (error){
-      console.error("FETCH ERROR ",error);
+      console.error(error);
     }
   };
   return (
@@ -51,7 +46,7 @@ export default function Blogs(){
         <div style={{display:"flex",flexDirection:"column"}}>
           <h1 style={{alignSelf:"center"}} className='text-8xl font-semibold font-mono mb-[50px]'>Blogs</h1>
           <InfiniteScroll style={{overflow:'unset'}}
-                  dataLength={items.length} //This is important field to render the next data
+                  dataLength={items.length}
                   next={fetchMoreData}
                   hasMore={count<blogsCount}
                   loader={<h4>Loading...</h4>}
@@ -59,18 +54,7 @@ export default function Blogs(){
                     <p style={{ textAlign: 'center' }} className='mt-[20px]'>
                       <b className='font-mono'>{blogsCount == 0 ? "No Blogs right now :( " : "Yay! You have seen it all"}</b>
                     </p>
-                  }
-                  // below props only if you need pull down functionality
-                  // refreshFunction={this.refresh}
-                  // pullDownToRefresh
-                  // pullDownToRefreshThreshold={50}
-                  // pullDownToRefreshContent={
-                  //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-                  // }
-                  // releaseToRefreshContent={
-                  //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-                  // }
-                >
+                  }>
                   {items.map((i, index) => (
                     <Blog i={i} key={index}/>
                   ))}
