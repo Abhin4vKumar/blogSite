@@ -30,7 +30,7 @@ export default function Navbar(){
     <div ref={appRef} className={"block fixed bg-[rgba(16,16,16,0.9)] blur w-[200vw] h-[70px] transform z-10"}></div>
     <nav className={"flex text-white fixed font-sans w-[100%] z-10 h-[60px] bg-[rgba(16,16,16,0.7)] backdrop:blur-sm"}>
         <div className='navLogo ml-[20px] h-[100%] flex items-center cursor-pointer'>
-            <Link href={{pathname:"/",}} className="text-3xl font-bold" >BlogPost</Link>
+            <Link href={{pathname:"/",}} className="text-3xl font-bold hover:text-purple-500 transition-all duration-300 hover:tracking-wide" >NeonBlogs</Link>
         </div>
         <div className='navOptions h-[100%] flex items-center cursor-pointer absolute gap-[10px] top-0 right-0'>
             <div className='navButtons h-[100%] flex items-center cursor-pointer'>
@@ -47,11 +47,11 @@ export default function Navbar(){
             <div className='navLogin h-[100%] flex items-center cursor-pointer'>
                 {!isAuthenticated?
                     <Link href={`/login`}>
-                    <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-[#FFC300] hover:text-black">Login</button>
+                    <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-purple-500 ">Login</button>
                 </Link>
                 :
                 <Link href={`/me`}>
-                    <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-[#FFC300] hover:text-black">Me</button>
+                    <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-purple-500">Me</button>
                 </Link>}
             </div>
         </div>

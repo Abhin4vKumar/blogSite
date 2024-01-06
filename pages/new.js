@@ -86,7 +86,7 @@ const New = () => {
                 <label for="message" className="block mb-2 text-sm font-medium text-white ">Content <i className='text-red-600'>*</i></label>
                 <textarea id="message" onChange={handleChange} rows="4" className="h-[100%] block p-2.5 w-full text-sm text-white bg-transparent border border-gray-600 placeholder-gray-400 outline-none" placeholder="Write your thoughts here..." required></textarea>
                 </div>
-                <button className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-[#FFC300] hover:text-black px-[20px] py-[10px]' type='submit' onClick={handleSubmit}>Post !</button>
+                <button className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[10px]' type='submit' onClick={handleSubmit}>Post !</button>
               </form>
             </div>
           </div>

@@ -47,7 +47,7 @@ export default function Home() {
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.center}>
           <div ref={appRef} className={styles.filterObj}></div>
-          <h1 className='text-[10em] font-bold'>BlogPost</h1>
+          <h1 className='text-[10em] font-bold'>NeonBlogs</h1>
         </div>
 
         <div className={styles.grid}>

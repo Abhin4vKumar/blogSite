@@ -132,5 +132,6 @@ a {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFC300;
+  /* background: #FFC300; */
+  background: rgba(168,85,247);
 }

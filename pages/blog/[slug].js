@@ -147,12 +147,12 @@ const slug = () => {
                     <h3 className='text-slate-500' >By <Link href={"users/" + blog.user.userName}>{blog.user.userName}</Link></h3>
                     <p className={style2.para + " " + ""}>{blog.desc}</p>
                     <p className={style2.para + " " + ""}>{blog.content}</p>
-                    <div className='absolute transition-colors duration-300 bottom-[0px] border-t border-l border-gray-700 right-[0px] hover:bg-[#FFC300] hover:text-black px-[20px] py-[20px] cursor-pointer flex items-center justify-center' onClick={handleDeleteBlog}><i className=''><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                    <div className='absolute transition-colors duration-300 bottom-[0px] border-t border-l border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[20px] cursor-pointer flex items-center justify-center' onClick={handleDeleteBlog}><i className=''><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
   <path fillRule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clipRule="evenodd" />
 </svg>
 
 </i></div>
-                    <div className='absolute transition-colors duration-300 bottom-[0px] border-t border-r border-gray-700 left-[0px] hover:bg-[#FFC300] hover:text-black px-[20px] py-[10px] cursor-pointer flex items-center justify-center gap-[5px]' onClick={handleUpVote}><i><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                    <div className='absolute transition-colors duration-300 bottom-[0px] border-t border-r border-gray-700 left-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[10px] cursor-pointer flex items-center justify-center gap-[5px]' onClick={handleUpVote}><i><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
   <path d="M1 8.25a1.25 1.25 0 1 1 2.5 0v7.5a1.25 1.25 0 1 1-2.5 0v-7.5ZM11 3V1.7c0-.268.14-.526.395-.607A2 2 0 0 1 14 3c0 .995-.182 1.948-.514 2.826-.204.54.166 1.174.744 1.174h2.52c1.243 0 2.261 1.01 2.146 2.247a23.864 23.864 0 0 1-1.341 5.974C17.153 16.323 16.072 17 14.9 17h-3.192a3 3 0 0 1-1.341-.317l-2.734-1.366A3 3 0 0 0 6.292 15H5V8h.963c.685 0 1.258-.483 1.612-1.068a4.011 4.011 0 0 1 2.166-1.73c.432-.143.853-.386 1.011-.814.16-.432.248-.9.248-1.388Z" />
 </svg>
 </i> : {blog.upVotes}</div>
@@ -191,7 +191,7 @@ const slug = () => {
                     <form className=' relative flex flex-col w-[100%] px-[20px] py-[20px] gap-[10px] border-t border-gray-700 mt-[25px]'>
                         <label for="message" class="block mb-2 text-sm font-medium text-white ">Your message</label>
                         <textarea id="message" onChange={handleChange} rows="4" class="block p-2.5 w-full text-sm text-white bg-transparent border border-gray-600 placeholder-gray-400 outline-none" placeholder="Write your thoughts here..."></textarea>
-                        <button className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-[#FFC300] hover:text-black px-[20px] py-[10px]' type='submit' onClick={handleSubmit}>submit</button>
+                        <button className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[10px]' type='submit' onClick={handleSubmit}>submit</button>
                     </form>
                 </div>
             </main>

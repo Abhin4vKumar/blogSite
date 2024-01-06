@@ -17,9 +17,20 @@ export default function About(){
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.center} style={{display:`flex` ,gap:`20px`, flexDirection:'column'}}>
+        <div className="flex justify-center" style={{display:`flex` ,gap:`20px`, flexDirection:'column'}}>
           <h1 style={{fontSize:"9em"}}>About</h1>
-          <p className={style2.para}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p className={style2.para}>Welcome to <b className='text-purple-500'>NEON BLOGS</b>, a thriving community dedicated to sharing diverse perspectives and fostering meaningful conversations. Our platform is a space where passionate individuals come together to create, explore, and connect through the power of written expression.</p>
+          <h1 style={{fontSize:"3em"}} >Our Mission:</h1>
+          <p className={style2.para}>At <b className='text-purple-500'>NEON BLOGS</b>, we believe in the transformative power of words. Our mission is to provide a welcoming platform for writers of all backgrounds to share their stories, insights, and experiences. We strive to create a vibrant and inclusive community that celebrates diversity and encourages open dialogue.</p>
+          <h1 style={{fontSize:"3em"}} >What We Offer:</h1>
+          <p className={style2.para}><b>User-Friendly Blogging:</b> Seamlessly create and publish your thoughts with our intuitive blogging interface.</p>
+          <p className={style2.para}><b>Community Engagement:</b> Connect with like-minded individuals through comments, likes, and shared interests.</p>
+          <p className={style2.para}><b>Inspiration and Exploration:</b> Dive into a rich tapestry of topics, from personal narratives to thought-provoking discussions.</p>
+          <h1 style={{fontSize:"3em"}} >Join Us in the Journey:</h1>
+          <p className={style2.para}>Whether you're an avid reader, a seasoned writer, or just someone looking for inspiration, <b className='text-purple-500'>NEON BLOGS</b> invites you to be a part of our growing community. Together, let's explore the boundless possibilities of storytelling and create a space where every voice is heard.</p>
+          <p className={style2.para}>Thank you for being a part of our story.</p>
+          <p className='text-red-500'>Abhinav Kumar</p>
+          <p>Founder/Creator, <b className='text-purple-500'>NEON BLOGS</b></p>
         </div>
       </main>
     </>
