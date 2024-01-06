@@ -12,6 +12,7 @@ const New = () => {
   const alertObj = useAlert();
   const dispatch = useDispatch();
   const router = useRouter();
+  const {isAuthenticated} = useSelector((state)=>state.user);
   const {error , success , loading , blog} = useSelector((state)=>state.newBlog);
   if(!loading){
     if(error){
@@ -19,6 +20,11 @@ const New = () => {
       dispatch({type:CLEAR_ERRORS});
     }
   }
+  useEffect(()=>{
+    if(!isAuthenticated){
+        router.replace("/");
+    }
+  },[])
   useEffect(()=>{
     if(!loading){
       if(success){
