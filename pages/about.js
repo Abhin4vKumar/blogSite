@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Link from "next/link";
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { Inter } from 'next/font/google'
@@ -29,7 +29,7 @@ export default function About(){
           <h1 style={{fontSize:"3em"}} >Join Us in the Journey:</h1>
           <p className={style2.para}>Whether you're an avid reader, a seasoned writer, or just someone looking for inspiration, <b className='text-purple-500'>NEON BLOGS</b> invites you to be a part of our growing community. Together, let's explore the boundless possibilities of storytelling and create a space where every voice is heard.</p>
           <p className={style2.para}>Thank you for being a part of our story.</p>
-          <p className='text-red-500'>Abhinav Kumar</p>
+          <Link href="https://github.com/Abhin4vKumar" className='w-fit'><p className='text-red-500'>Abhinav Kumar</p></Link>
           <p>Founder/Creator, <b className='text-purple-500'>NEON BLOGS</b></p>
         </div>
       </main>
