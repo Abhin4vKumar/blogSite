@@ -6,6 +6,10 @@ import Head from 'next/head'
 import Link from 'next/link'
 import style2 from '@/styles/About.module.css'
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useAlert } from 'react-alert';
+import {useDispatch , useSelector} from "react-redux";
+import { getBlog } from '@/src/actions/blogActions';
+import { CLEAR_ERRORS } from '@/src/constants/blogConstants';
 
 const inter = Inter({ subsets: ['latin'] })
 const slug = () => {
@@ -16,39 +20,62 @@ const slug = () => {
     const [blog , setBlog] = useState(null);
     const [loading , setLoading] = useState(true);
     const [comment , setComment] = useState("");
+    const dispatch = useDispatch();
+    const alertObj = useAlert();
     const handleSubmit = async(e)=>{
         e.preventDefault();
     }
     const handleChange = (e)=>{
         setComment(e.target.value);
     }
-    const fetchData = async()=>{
-        try{
-            const res = await fetch(`http://localhost:4000/api/v1/blog/${slug}`);
-            const data = await res.json();
-            if(data.success){
-                setBlog(data.blog);
-                setLoading(false);
-                setItems(data.blog.comments.slice(0,count+5));
-                setCount((prev)=>{
-                    return prev+5;
-                  });
-            }else{
-                console.error(data.message);
-                router.replace('/');
-            }
-        }catch(error){
-            console.error(error);
-        }
-    }
+    const blogState = useSelector((state)=>state.blogDetails);
     useEffect(()=>{
         if(slug){
-            fetchData();
+            dispatch(getBlog(slug));
         }
-    },[slug])
+    },[slug]);
+    useEffect(()=>{
+        try{
+            if(!blogState.loading){
+                if(blogState.blog){
+                    if(blogState.blog.success){
+                        setBlog(blogState.blog.blog);
+                        setLoading(false);
+                    }
+                }
+            }
+        }catch(error){
+            console.log(error);
+        }
+    },[blogState])
+
+    
+    if(!loading){
+        if(blogState.error){
+            alertObj.error(blogState.error.message);
+            dispatch({type:CLEAR_ERRORS});
+            router.replace("/blogs");
+        }
+    }
+    const fetchData = async()=>{
+        try{
+            dispatch(getBlog(slug));
+            if(blogState.blog.success){
+                setBlog(blogState.blog.blog);
+                setItems(blogState.blog.blog.comments.slice(0,count+5));
+                setCount((prev)=>{
+                        return prev+5;
+                    });
+                setLoading(false);
+            }
+        }catch(error){
+            console.log(error);
+            router.reload();
+        }
+    }
     return (
         <>
-        {loading? <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",color:"white"}}>Loading</div>:
+        {loading ? <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",color:"white"}}>Loading</div>:
         <>
             <Head>
                 <title>{blog.name}</title>
@@ -57,7 +84,7 @@ const slug = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={`${styles.main} ${inter.className}`}>
-                <div className="drop-shadow-[0_10px_150px_rgba(255,255,255,1)] flex items-center justify-center w-[90vw] min-h-[90vh] gap-[20px] flex-col border border-gray-700 py-[50px]" >
+                <div className=" flex items-center justify-center w-[90vw] min-h-[90vh] gap-[20px] flex-col border border-gray-700 py-[50px]" >
                     <h1 className='text-5xl'>{blog.name}</h1>
                     <h3 className='text-slate-500' >By <Link href={"users/" + blog.user.userName}>{blog.user.userName}</Link></h3>
                     <p className={style2.para + " " + ""}>{blog.desc}</p>

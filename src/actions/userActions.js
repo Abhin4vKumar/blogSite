@@ -26,9 +26,10 @@ import {
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
     CLEAR_ERRORS,
-  } from "@/src/constants/userConstants";
+} from "@/src/constants/userConstants";
+import Cookies from 'js-cookie';
+import { baseURL , postOptions } from "../constants/configConstants";
 
-  import { baseURL , postOptions } from "../constants/configConstants";
 
 export const login = (loginData)=> async(dispatch)=>{
     try{
@@ -38,7 +39,8 @@ export const login = (loginData)=> async(dispatch)=>{
         const data = await res.json();
 
         if(data.success){
-            dispatch({type: LOGIN_SUCCESS, payload:data});
+            Cookies.set('token' , data.token);
+            dispatch({type: LOGIN_SUCCESS, payload:{user : data.user , success: data.success}});
         }else{
             dispatch({type: LOGIN_FAIL , payload : data});
         }
@@ -52,10 +54,11 @@ export const login = (loginData)=> async(dispatch)=>{
 
 export const logout = () => async(dispatch) =>{
     try{
-        let link = `/api/v1/logout`;
+        let link = `/api/v1/logout?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link);
         const data = await res.json();
         if(data.success){
+            Cookies.remove('token');
             dispatch({type: LOGOUT_SUCCESS , payload:data});
         }else{
             dispatch({type: LOGOUT_FAIL , payload:data});
@@ -74,7 +77,8 @@ export const register = (userData) => async(dispatch)=>{
         const res = await fetch(baseURL + link , {...postOptions , body:JSON.stringify(userData)});
         const data = await res.json();
         if(data.success){
-            dispatch({type:REGISTER_USER_SUCCESS , payload:data});
+            Cookies.set('token' , data.token);
+            dispatch({type:REGISTER_USER_SUCCESS , payload:{user : data.user , success: data.success}});
         }else{
             dispatch({type:REGISTER_USER_FAIL , payload:data});
         }

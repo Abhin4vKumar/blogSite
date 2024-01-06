@@ -27,7 +27,7 @@ import {
     BLOG_DETAILS_REQUEST,
     BLOG_DETAILS_SUCCESS
 } from "@/src/constants/blogConstants";
-
+import Cookies from "js-cookie";
 import { baseURL , postOptions } from "../constants/configConstants";
 
 export const getBlogs = (keyword = "",currentPage = 1)=> async(dispatch)=>{
@@ -54,10 +54,12 @@ export const getBlogs = (keyword = "",currentPage = 1)=> async(dispatch)=>{
 export const getMyBlogs = () => async(dispatch) =>{
     try{
         dispatch({type:MY_BLOG_REQUEST});
-        let link = `/api/v1/myblogs`;
+        let keyword = "";
+        let currentPage = 1;
+        let link = `/api/v1/myblogs?keyword=${keyword}&page=${currentPage}&token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link);
         const data = await res.json();
-
+        console.log(data);
         if(data.success){
             dispatch({type: MY_BLOG_SUCCESS , payload:data});
         }else{
@@ -73,7 +75,7 @@ export const newBlog = (blogData) => async(dispatch)=>{
         dispatch({
             type:NEW_BLOG_REQUEST
         });
-        let link = '/api/v1/blog/new';
+        let link = `/api/v1/blog/new?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link , {...postOptions , body:JSON.stringify(blogData)});
         const data = await res.json();
         if(data.success){
@@ -108,7 +110,7 @@ export const updateBlog = (id,blogData) => async(dispatch)=>{
         dispatch({
             type:UPDATE_BLOG_REQUEST
         });
-        let link = `/api/v1/blog/update/${id}`;
+        let link = `/api/v1/blog/update/${id}?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link , {...postOptions , body:JSON.stringify(blogData)});
         const data = await res.json();
         if(data.success){
@@ -126,7 +128,7 @@ export const deleteBlog = (id) => async(dispatch)=>{
         dispatch({
             type:DELETE_BLOG_REQUEST
         });
-        let link = `/api/v1/blog/delete/${id}`;
+        let link = `/api/v1/blog/delete/${id}?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link);
         const data = await res.json();
         if(data.success){
@@ -145,7 +147,7 @@ export const upVote = (id) => async(dispatch)=>{
         dispatch({
             type:UPVOTE_BLOG_REQUEST
         });
-        let link = `/api/v1/blog/up/${id}`;
+        let link = `/api/v1/blog/up/${id}?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link);
         const data = await res.json();
         if(data.success){
@@ -164,7 +166,7 @@ export const comment = (id,blogData) => async(dispatch)=>{
         dispatch({
             type:COMMENT_BLOG_REQUEST
         });
-        let link = `/api/v1/blog/comment/${id}`;
+        let link = `/api/v1/blog/comment/${id}?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link , {...postOptions , body:JSON.stringify(blogData)});
         const data = await res.json();
         if(data.success){
@@ -182,7 +184,7 @@ export const deleteComment = (id,cid)=> async(dispatch)=>{
         dispatch({
             type:DEL_COMMENT_BLOG_REQUEST
         });
-        let link = `/api/v1/blog/comment/del/${id}/${cid}`;
+        let link = `/api/v1/blog/comment/del/${id}/${cid}?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link);
         const data = await res.json();
         if(data.success){

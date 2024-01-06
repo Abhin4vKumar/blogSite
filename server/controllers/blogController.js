@@ -97,10 +97,9 @@ exports.getAllBlogs = catchAsyncErrors(async (req, res, next) => {
 //Need to work on this
 exports.getMyBlogs = catchAsyncErrors(async (req, res, next) => {
     const resultPerPage = 0;
-    const blogsCount = await Blogs.countDocuments();
     const UserObj = req.user;
-    const apiFeature = new ApiFeatures(Blogs.find({user:{user_id:UserObj._id,userName:UserObj.userName}}), req.query).search().filter().pagination(resultPerPage)
-    const Blogss = await apiFeature.query;
+    const Blogss = await Blogs.find({user:{user_id:UserObj._id,userName:UserObj.userName}});
+    const blogsCount = Blogss.length;
     res.status(200).json({ success: true, blogs: Blogss, blogsCount , resultPerPage})
 });
 exports.deleteBlog = catchAsyncErrors(async (req, res, next) => {

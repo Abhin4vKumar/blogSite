@@ -6,6 +6,11 @@ import styles from '@/styles/Home.module.css'
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Blog from '@/src/blog';
+import {useDispatch , useSelector} from 'react-redux';
+
+import {getBlogs} from "@/src/actions/blogActions";
+import { useAlert } from 'react-alert';
+import { CLEAR_ERRORS } from '@/src/constants/blogConstants';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,26 +18,21 @@ export default function Blogs(){
   const [items,setItems] = useState([]);
   const [blogsCount,setBlogsCount] = useState(0);
   const [count , setCount] = useState(0);
+  const dispatch = useDispatch();
+  const alertObj = useAlert();
   useEffect(()=>{
     fetchMoreData();
   },[])
+  const {error , loading , blogs} = useSelector((state) => state.blogs);
+  if(error){
+    alertObj.error(error);
+    dispatch({type:CLEAR_ERRORS});
+  }
   const fetchMoreData = async () => {
-    try{
-      const response = await fetch("http://localhost:4000/api/v1/allblogs");
-      const data = await response.json();
-      const {success , blogs , blogsCount,resultPerPage} = data;
-      if(success){
-        setBlogsCount(blogsCount);
-        setItems(blogs.slice(0,count+5));
-        setCount((prev)=>{
-          return prev+5;
-        });
-      }else{
-        console.error(data.message);
-      }
-    }catch (error){
-      console.error(error);
-    }
+    await dispatch(getBlogs());
+    setItems(blogs.slice(0,count+5));
+    setCount((prev)=>{return prev+5});
+    setBlogsCount(blogs.length);
   };
   return (
     <>

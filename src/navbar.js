@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link  from 'next/link'
+import {useSelector} from "react-redux";
+
 
 export default function Navbar(){
+    const {loading , isAuthenticated , user} = useSelector((state) => (state.user));
     const appRef = useRef();
     const setNav = ()=>{
         try{
@@ -35,12 +38,21 @@ export default function Navbar(){
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/",}}>Home</Link></li>
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/about",}}>About</Link></li>
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/blogs",}}>Blogs</Link></li>
+                    {isAuthenticated?
+                    <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/new",}}>Post</Link></li>
+                    :<></>
+                    }
                 </ul>
             </div>
             <div className='navLogin h-[100%] flex items-center cursor-pointer'>
-                <Link href={`/login`}>
+                {!isAuthenticated?
+                    <Link href={`/login`}>
                     <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-[#FFC300] hover:text-black">Login</button>
                 </Link>
+                :
+                <Link href={`/me`}>
+                    <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-[#FFC300] hover:text-black">Me</button>
+                </Link>}
             </div>
         </div>
     </nav>

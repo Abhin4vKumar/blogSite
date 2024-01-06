@@ -1,21 +1,23 @@
 import Head from 'next/head';
-import React, { Fragment , useState } from 'react';
+import React, { Fragment , useState  , useEffect} from 'react';
+import {useDispatch , useSelector} from "react-redux";
+import { useAlert } from 'react-alert';
+import { login , register } from '@/src/actions/userActions';
+import { useRouter } from 'next/router';
 
 function LoginPage() {
-    // const navigate = useNavigate()
-    // const dispatch = useDispatch();
-    // const alertobj = useAlert();
-    // const { error, loading, isAuthenticated } = useSelector(
-    //     (state) => state.user
-    //   );
-    // useEffect(()=>{
-    //     if(isAuthenticated){
-    //         navigate("/dashboard");
-    //     }
-    // } , [navigate,isAuthenticated])
-    // useEffect(()=>{
-
-    // }, [])
+    const dispatch = useDispatch();
+    const alertobj = useAlert();
+    const router = useRouter();
+    const { error, loading, isAuthenticated , user} = useSelector(
+        (state) => state.user
+      );
+    useEffect(()=>{
+        if(isAuthenticated){
+            console.log(user);
+            router.replace("/blogs");
+        }
+    } , [isAuthenticated])
   const [loginUsername, setLUsername] = useState('');
   const [loginPassword, setLPassword] = useState('');
   const [name , setName] = useState('');
@@ -25,21 +27,17 @@ function LoginPage() {
   const [activeState , setAS] = useState('');
   const [checkboxR , setRCheckState] = useState(true);
   const [remMe , setRemMe] = useState(false);
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // console.log(`Username: ${loginUsername}, Password: ${loginPassword} , Rem Me ? : ${remMe}`);
-    // if(loginUsername == ''){
-    //     alertobj.error("Enter E-mail !!");
-    //     return;
-
-    // }
-    // if(loginPassword == ''){
-    //     alertobj.error("Enter Password !!");
-    //     return;
-
-    // }
-    // dispatch(login(loginUsername,loginPassword))
-    // navigate("/dashboard");
+    if(loginUsername == ''){
+        alertobj.error("Enter E-mail !!");
+        return;
+    }
+    if(loginPassword == ''){
+        alertobj.error("Enter Password !!");
+        return;
+    }
+    await dispatch(login({email:loginUsername,password:loginPassword}))
   };
   const handleRCheckbox = (e)=>{
     setRCheckState(! e.target.checked);

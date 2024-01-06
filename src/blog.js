@@ -5,7 +5,7 @@ export default function Blog(props){
   
   return (
     <>
-        <div className='drop-shadow-[0_10px_50px_rgba(255,255,255,1)] backdrop-saturate-200  transition-all duration-500 cursor-default relative min-h-[170px] min-w-[50vw] mt-[20px] border border-gray-700 px-[20px] py-[20px] backdrop:blur hover:scale-105 hover:z-[2]'>
+        <div className=' backdrop-saturate-200  transition-all duration-500 cursor-default relative min-h-[170px] min-w-[50vw] mt-[20px] border border-gray-700 px-[20px] py-[20px] backdrop:blur hover:scale-105 hover:z-[2]'>
             <div>
                 <h3 className='font-sans text-center font-bold text-xl'>{props.i.name}</h3>
             </div>
