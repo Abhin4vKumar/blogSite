@@ -7,6 +7,7 @@ import Blog from '@/src/blog';
 import { getMyBlogs } from '@/src/actions/blogActions';
 import { CLEAR_ERRORS } from '@/src/constants/blogConstants';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const New = () => {
     const [items,setItems] = useState([]);
@@ -61,7 +62,7 @@ const New = () => {
             <div className='bg-purple-700 flex flex-col items-center justify-center w-[200px] max-w-[20vw] h-[100%]'>
                 <div className={'py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' + " " + (section==0 ? "bg-zinc-900" : "")} onClick={profileClick} >Profile</div>
                 <div className={'py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' + " " + (section==1 ? "bg-zinc-900" : "")} onClick={myBlogsClick} >My Blogs</div>
-                <div className='py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' onClick={handleLogout}>Logout</div>
+                <Link className='py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' href={"/logout"}>Logout</Link>
             </div>
             <div style={{width:"calc(100% - 200px)"}} className='flex items-center justify-center min-w-[80vw]'>
                 {section == 1?

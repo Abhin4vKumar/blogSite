@@ -57,11 +57,6 @@ exports.deleteComment = catchAsyncErrors(async (req, res, next) => {
     }
     let flag = 0;
     data.comments.forEach((e)=>{
-        console.log(e._id.toString() == req.params.cid);
-        console.log(e._id.toString());
-        console.log(req.params.cid);
-        console.log(typeof(e._id.toString()));
-        console.log(typeof(req.params.cid));
         if(e._id.toString() == req.params.cid){
             if(e.user.userName == req.user.userName){
                 flag = 1;
@@ -72,10 +67,8 @@ exports.deleteComment = catchAsyncErrors(async (req, res, next) => {
             data.commentss.push(e);
         }
     })
-    console.log(flag);
     if(flag == 0){
-        console.log(flag);
-        return next(new ErrorHandler("Comment does not exists" , 404));
+        return next(new ErrorHandler("Comment does not exists or You dont have Access" , 404));
     }
     const dat = await Blogs.findByIdAndUpdate(req.params.id , {comments:data.commentss} ,{
         new: true,
@@ -106,6 +99,10 @@ exports.deleteBlog = catchAsyncErrors(async (req, res, next) => {
     const blg = await Blogs.findById(req.params.id);
     if(!blg){
         return next(new ErrorHandler("Blog does not exists" , 404))
+    }
+    const usr = req.user;
+    if(blg.user.user_id.toString() != usr._id.toString()){
+        return next(new ErrorHandler("You Dont have Access",400));
     }
     const dat = await Blogs.findOneAndDelete(req.params.id);
     return res.status(200).json({

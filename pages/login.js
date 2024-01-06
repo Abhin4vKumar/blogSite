@@ -27,6 +27,7 @@ function LoginPage() {
   const [activeState , setAS] = useState('');
   const [checkboxR , setRCheckState] = useState(true);
   const [remMe , setRemMe] = useState(false);
+  const [registerEmail , setRUEmail] = useState("");
   const handleLogin = async (e) => {
     e.preventDefault();
     if(loginUsername == ''){
@@ -37,50 +38,51 @@ function LoginPage() {
         alertobj.error("Enter Password !!");
         return;
     }
-    await dispatch(login({email:loginUsername,password:loginPassword}))
+    dispatch(login({email:loginUsername,password:loginPassword}))
   };
   const handleRCheckbox = (e)=>{
     setRCheckState(! e.target.checked);
   }
   const handleRemMe = (e)=>{
     setRemMe(e.target.checked);
-    // if(e.target.checked){
-    //     alertobj.info(":) Will Remember You ♥");
-    // }else{
-    //     alertobj.info("Alright , NVM :(");
-    // }
+    if(e.target.checked){
+        alertobj.info(":) Will Remember You ♥");
+    }else{
+        alertobj.info("Alright , NVM :(");
+    }
+  }
+  function isEmpty(value) {
+    return (value == null || (typeof value === "string" && value.trim().length === 0));
   }
   const handleRegister = (e) => {
     e.preventDefault();
-    // if(name == ''){
-    //     alertobj.error("Enter Name !!");
-    //     return;
-    // }
-    // if(registerUsername == ''){
-    //     alertobj.error("Enter E-mail !!");
-    //     return;
-
-    // }
-    // if(registerPassword == ''){
-    //     alertobj.error("Enter Password !!");
-    //     return;
-
-    // }
-    // if(confirmPassword == ''){
-    //     alertobj.error("Enter Confirm Password !!");
-    //     return;
-
-    // }
-    // if(confirmPassword == registerPassword){
-    //     console.log(`Name : ${name}, Username: ${registerUsername}, Password: ${registerPassword} , PhoneNumber : ${phoneNumber}`);
-
-    // }else{
-    //     setRPassword("");
-    //     setConfirmPassword("");
-    //     alertobj.error("Passwords Doesn't Match")
-    //     console.log("Passwords dont match");
-    // }
-    // Add your login logic here
+    if(isEmpty(name)){
+        alertobj.error("Enter Name !!");
+        return;
+    }
+    if(isEmpty(registerUsername)){
+        alertobj.error("Enter Username !!");
+        return;
+    }
+    if(isEmpty(registerEmail)){
+        alertobj.error("Enter E-mail !!");
+        return;
+    }
+    if(isEmpty(registerPassword)){
+        alertobj.error("Enter Password !!");
+        return;
+    }
+    if(isEmpty(confirmPassword)){
+        alertobj.error("Enter Confirm Password !!");
+        return;
+    }
+    if(confirmPassword == registerPassword){
+        dispatch(register({name,userName:registerUsername,email:registerEmail,password:registerPassword}));    
+    }else{
+        setRPassword("");
+        setConfirmPassword("");
+        alertobj.error("Passwords Doesn't Match")
+    }
   };
   const markActive = (e) =>{
     e.preventDefault();
@@ -147,7 +149,11 @@ return (
                         <i className="uil uil-user"></i>
                     </div>
                     <div className="input-field">
-                        <input type="text" value={registerUsername} placeholder="Enter your email" onChange={(e) => {setRUsername(e.target.value)}} required /> 
+                        <input type="text" value={registerUsername} placeholder="Enter your Username" onChange={(e) => {setRUsername(e.target.value)}} required /> 
+                        <i className="uil uil-envelope icon"></i>
+                    </div>
+                    <div className="input-field">
+                        <input type="text" value={registerEmail} placeholder="Enter your E-mail" onChange={(e) => {setRUEmail(e.target.value)}} required /> 
                         <i className="uil uil-envelope icon"></i>
                     </div>
                     <div className="input-field">

@@ -26,7 +26,12 @@ import {
     BLOG_DETAILS_FAIL,
     BLOG_DETAILS_REQUEST,
     BLOG_DETAILS_SUCCESS,
-    NEW_BLOG_RESET
+    NEW_BLOG_RESET,
+    COMMENT_BLOG_RESET,
+    DEL_COMMENT_BLOG_RESET,
+    UPDATE_BLOG_RESET,
+    DELETE_BLOG_RESET,
+    UPVOTE_BLOG_RESET
 } from "@/src/constants/blogConstants";
 import { CLEAR_ERRORS } from "../constants/userConstants";
 
@@ -135,13 +140,21 @@ export const blogReducer = (state = {} , action) =>{
             return{
                 ...state,
                 loading: false,
+                success:true,
                 isDeleted: action.payload,
             };
         case UPDATE_BLOG_SUCCESS:
             return {
                 ...state,
                 loading: false,
+                success:true,
                 isUpdated: action.payload,
+            };
+        case DELETE_BLOG_RESET:
+        case UPDATE_BLOG_RESET:
+            return {
+                ...state,
+                success:false,
             };
         case DELETE_BLOG_FAIL:
         case UPDATE_BLOG_FAIL:
@@ -199,12 +212,20 @@ export const blogCommentReducer = (state = {blogCommentStatus : {}},action) =>{
         case COMMENT_BLOG_SUCCESS:
             return {
                 loading:false,
+                success:true,
                 commentAdded: true,
             };
         case DEL_COMMENT_BLOG_SUCCESS:
             return{
                 loading:false,
+                success:true,
                 commentDeleted: true,
+            };
+        case COMMENT_BLOG_RESET:
+        case DEL_COMMENT_BLOG_RESET:
+            return {
+                ...state,
+                success:false,
             };
         case COMMENT_BLOG_FAIL:
         case DEL_COMMENT_BLOG_FAIL:
@@ -232,7 +253,13 @@ export const blogVoteReducer = (state = {upVoteStatus:{}},action)=>{
         case UPVOTE_BLOG_SUCCESS:
             return{
                 loading:false,
+                success:true,
                 upVoteChanged : true,
+            };
+        case UPVOTE_BLOG_RESET:
+            return {
+                ...state,
+                success:false,
             };
         case UPVOTE_BLOG_FAIL:
             return{
