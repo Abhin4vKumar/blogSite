@@ -2,13 +2,31 @@ import Head from 'next/head'
 
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const appRef = useRef();
+  const [defaultVar , setDefault] = useState(0);
   useEffect(()=>{
+    try{
+      if(defaultVar == 0){
+        if(appRef){
+          appRef.current.style.setProperty(
+            '--mouse-x',
+            0 + "%"
+          )
+          appRef.current.style.setProperty(
+            '--mouse-y',
+            0 + "%"
+          )
+        }
+        setDefault(1);
+      }
+    }catch(error){
+      console.error(error);
+    }
     const moveGradient = (e)=>{
       const winWidth = window.innerWidth;
       const winHeight = window.innerHeight;
