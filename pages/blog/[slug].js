@@ -145,8 +145,8 @@ const slug = () => {
                 <div className="relative flex items-center justify-center w-[90vw] min-h-[90vh] gap-[20px] flex-col border border-gray-700 py-[50px]" >
                     <h1 className='text-5xl'>{blog.name}</h1>
                     <h3 className='text-slate-500' >By <Link href={"users/" + blog.user.userName}>{blog.user.userName}</Link></h3>
-                    <p className={style2.para + " " + ""}>{blog.desc}</p>
-                    <p className={style2.para + " " + ""}>{blog.content}</p>
+                    <p className={style2.para + " " + "text-justify"}>{blog.desc}</p>
+                    <p className={style2.para + " " + "text-justify"}>{blog.content}</p>
                     <div className='absolute transition-colors duration-300 bottom-[0px] border-t border-l border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[20px] cursor-pointer flex items-center justify-center' onClick={handleDeleteBlog}><i className=''><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
   <path fillRule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clipRule="evenodd" />
 </svg>
