@@ -21,6 +21,7 @@ const slug = () => {
     const [blog , setBlog] = useState(null);
     const [loading , setLoading] = useState(true);
     const [comment , setComment] = useState("");
+    const [commentArr , setCommentArr] = useState([]);
     const dispatch = useDispatch();
     const alertObj = useAlert();
     const handleSubmit = async(e)=>{
@@ -55,6 +56,12 @@ const slug = () => {
                 if(blogState.blog){
                     if(blogState.blog.success){
                         setBlog(blogState.blog.blog);
+                        const Commentar = [];
+                        for(let i=0; i < blogState.blog.blog.comments.length ; i++){
+                            let ind = blogState.blog.blog.comments.length - i - 1;
+                            Commentar.push(blogState.blog.blog.comments[ind]);
+                        }
+                        setCommentArr(Commentar);
                         setLoading(false);
                     }
                 }
@@ -120,7 +127,7 @@ const slug = () => {
             dispatch(getBlog(slug));
             if(blogState.blog.success){
                 setBlog(blogState.blog.blog);
-                setItems(blogState.blog.blog.comments.slice(0,count+5));
+                setItems(commentArr.slice(0,count+5));
                 setCount((prev)=>{
                         return prev+5;
                     });
