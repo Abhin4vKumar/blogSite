@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Link from "next/link";
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
-import { sendOTP , verifyOtp } from '@/src/actions/userActions';
+import { loadUser, sendOTP , verifyOtp } from '@/src/actions/userActions';
 import { useAlert } from 'react-alert';
 import {useSelector , useDispatch} from 'react-redux';
 import { useRouter } from 'next/router';
+import { CLEAR_ERRORS , VERIFY_RESET , EMAIL_RESET } from '@/src/constants/userConstants';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Verify(){
@@ -22,16 +23,19 @@ export default function Verify(){
         e.preventDefault();
         if(enteredOtp == otp){
             setLoading(false);
-            alertObj.info("Verified");
+            dispatch(verifyOtp(enteredOtp));
         }else{
             alertObj.error("Wrong OTP");
         }
     }
+    const dispatch = useDispatch();
     const router = useRouter();
     const userState = useSelector((state)=>state.user);
+    const generalState = useSelector((state)=>state.general);
     useEffect(()=>{
         if(userState.isAuthenticated){
             if(userState.user.user.verified){
+                dispatch(loadUser());
                 router.replace("/blogs");
             }
             console.log(userState);
@@ -39,6 +43,23 @@ export default function Verify(){
             router.replace("/");
         }
     },[userState]);
+    useEffect(()=>{
+        if(generalState.success){
+            if(generalState.verified){
+                router.replace("/blogs");
+                dispatch({type:VERIFY_RESET});
+            }
+            if(generalState.emailSent){
+                alertObj.info("EMAIL SENT");
+                dispatch({type:EMAIL_RESET});
+            }
+        }else{
+            if(generalState.error){
+                alertObj.error(generalState.error);
+                dispatch({type:CLEAR_ERRORS});
+            }
+        }
+    },[generalState]);
     const send = async()=>{
         let count = 3 * 60;
         const timer = setInterval(function() {
@@ -62,7 +83,7 @@ export default function Verify(){
         setCount((prev)=>{return prev+1});
         const otpc = Math.floor((Math.random()*1000000)+1)
         setOTP(otpc);
-        sendOTP(otpc);
+        dispatch(sendOTP(otpc));
         console.log(otpc);
     }
   return (

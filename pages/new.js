@@ -12,7 +12,7 @@ const New = () => {
   const alertObj = useAlert();
   const dispatch = useDispatch();
   const router = useRouter();
-  const {isAuthenticated} = useSelector((state)=>state.user);
+  const {isAuthenticated , user} = useSelector((state)=>state.user);
   const {error , success , loading , blog} = useSelector((state)=>state.newBlog);
   if(!loading){
     if(error){
@@ -23,6 +23,10 @@ const New = () => {
   useEffect(()=>{
     if(!isAuthenticated){
         router.replace("/");
+    }
+    if(!user.verified){
+      alertObj.error("Verify Account in order to POST a blog !");
+      router.replace("/me");
     }
   },[])
   useEffect(()=>{

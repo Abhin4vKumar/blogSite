@@ -1,4 +1,4 @@
-import { logout } from '@/src/actions/userActions';
+import { logout , loadUser} from '@/src/actions/userActions';
 import React, { useEffect, useState } from 'react'
 import {useDispatch , useSelector} from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -23,6 +23,7 @@ const New = () => {
         if(!isAuthenticated){
             router.replace("/");
         }
+        dispatch(loadUser());
       },[])
     useEffect(()=>{
         if(!isAuthenticated){
@@ -62,6 +63,11 @@ const New = () => {
             <div className='bg-purple-700 flex flex-col items-center justify-center w-[200px] max-w-[20vw] h-[100%]'>
                 <div className={'py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' + " " + (section==0 ? "bg-zinc-900" : "")} onClick={profileClick} >Profile</div>
                 <div className={'py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' + " " + (section==1 ? "bg-zinc-900" : "")} onClick={myBlogsClick} >My Blogs</div>
+                {!user.user.verified?
+
+                    <Link className='py-[20px] bg-red-600 w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' href={"/verify"}>Verify Email !</Link>
+                :<></>
+                }
                 <Link className='py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' href={"/logout"}>Logout</Link>
             </div>
             <div style={{width:"calc(100% - 200px)"}} className='flex items-center justify-center min-w-[80vw]'>
@@ -90,7 +96,10 @@ const New = () => {
                             <label className='text-2xl'>E-mail : </label>
                             <label className='text-2xl'>{user.user.email}</label>
                         </div>
-                        
+                        <div>
+                            <label className='text-2xl'>Verification Status : </label>
+                            <label className='text-2xl'>{user.user.verified ? "Verified" : "Pending"}</label>
+                        </div>
                     </div>
                 }
             </div>

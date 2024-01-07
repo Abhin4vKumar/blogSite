@@ -26,6 +26,15 @@ import {
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
     CLEAR_ERRORS,
+    EMAIL_REQUEST,
+    VERIFY_REQUEST,
+    EMAIL_SUCCESS,
+    VERIFY_SUCCESS,
+    EMAIL_FAIL,
+    VERIFY_FAIL,
+    CLEAR_STATE,
+    VERIFY_RESET,
+    EMAIL_RESET,
   } from "@/src/constants/userConstants";
 
 
@@ -66,6 +75,62 @@ import {
                 ...state,
                 error:null,
             };
+        case CLEAR_ERRORS:
+            return{
+                ...state,
+                error:null,
+            };
+        default:
+            return state;
+    }
+};
+
+export const generalReducer = (state ={} , action) =>{
+    switch (action.type){
+        case EMAIL_REQUEST:
+        case VERIFY_REQUEST:
+            return{
+                loading:true,
+            }
+        case EMAIL_SUCCESS:
+            return{
+                success:true,
+                emailSent:true,
+            }
+        case VERIFY_SUCCESS:
+            return{
+                success:true,
+                verified:true,
+            }
+        case EMAIL_FAIL:
+            return{
+                success:false,
+                emailSent:false,
+                error:action.payload
+            }
+        case VERIFY_FAIL:
+            return{
+                success:false,
+                verified:false,
+                error:action.payload
+            }
+        case VERIFY_RESET:
+            return{
+                ...state,
+                verified:false,
+            }
+        case EMAIL_RESET:
+            return{
+                ...state,
+                emailSent:false,
+            }
+        case CLEAR_ERRORS:
+            return{
+                ...state,
+                error:null,
+            };
+        case CLEAR_STATE:
+            return{};
         default:
             return state;
     }

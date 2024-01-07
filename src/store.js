@@ -11,6 +11,7 @@ import {
 } from "@/src/reducers/blogReducer";
 
 import {
+    generalReducer,
     userReducer,
 } from "@/src/reducers/userReducer";
 
@@ -25,6 +26,7 @@ const persistConfig = {
 }
 
 const reducer = combineReducers({
+    general:generalReducer,
     blogs:blogsReducer,
     blogDetails:blogDetailsReducer,
     user:userReducer,

@@ -26,6 +26,12 @@ import {
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
     CLEAR_ERRORS,
+    VERIFY_REQUEST,
+    VERIFY_FAIL,
+    VERIFY_SUCCESS,
+    EMAIL_REQUEST,
+    EMAIL_SUCCESS,
+    EMAIL_FAIL,
 } from "@/src/constants/userConstants";
 import Cookies from 'js-cookie';
 import { baseURL , postOptions } from "../constants/configConstants";
@@ -69,6 +75,22 @@ export const logout = () => async(dispatch) =>{
     }
 }
 
+export const loadUser = ()=>async(dispatch)=>{
+    try{
+        let link = '/api/v1/me';
+        const res = await fetch(baseURL + link);
+        const data = await res.json();
+        if(data.success){
+            dispatch({type:LOAD_USER_SUCCESS , payload:data});
+        }else{
+            dispatch({type:LOAD_USER_FAIL , payload:data.message});
+        }
+    }catch(error){
+        console.log(error);
+        dispatch({type:LOAD_USER_FAIL , payload: ""});
+    }
+}
+
 export const register = (userData) => async(dispatch)=>{
     try{
         dispatch({
@@ -88,32 +110,36 @@ export const register = (userData) => async(dispatch)=>{
     }
 }
 
-export const sendOTP = (otp) => async()=>{
+export const sendOTP = (otp) => async(dispatch)=>{
     try{
-        let link = `/api/v1/verify`;
-        console.log(otp);
+        dispatch({type:EMAIL_REQUEST});
+        let link = `/api/v1/verify?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link,{...postOptions , body:JSON.stringify({otp})});
         const data = await res.json();
-        console.log(data);
+        if(data.success){
+            dispatch({type:EMAIL_SUCCESS , payload:data});
+        }else{
+            dispatch({type:EMAIL_FAIL , payload:data.message});
+        }
     }catch(error){
-        console.log(error);
+        dispatch({type:EMAIL_FAIL , payload:error.response.data.message});
     }
 }
 
-export const verifyOtp = (otp) => async()=>{
+export const verifyOtp = (otp) => async(dispatch)=>{
     try{
-        let link = `/api/v1/verify/me`;
+        dispatch({type:VERIFY_REQUEST});
+        let link = `/api/v1/verify/me?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link,{...postOptions , body:JSON.stringify({otp})});
         const data = await res.json();
-        console.log(data);
         if(data.success){
-            return "Email Sent";
+            dispatch({type:VERIFY_SUCCESS,payload:data});
         }else{
-            return data.message;
+            dispatch({type:VERIFY_FAIL , payload: data.message});
         }
     }catch(error){
-        console.log(error);
-        return error.response.data.message;
+        console.error(error);
+        dispatch({type:VERIFY_FAIL,payload:error.response.data.message});
     }
 }
 
