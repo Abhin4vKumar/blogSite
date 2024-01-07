@@ -55,6 +55,7 @@ const slug = () => {
             if(!blogState.loading){
                 if(blogState.blog){
                     if(blogState.blog.success){
+                        fetchData();
                         setBlog(blogState.blog.blog);
                         const Commentar = [];
                         for(let i=0; i < blogState.blog.blog.comments.length ; i++){
@@ -76,6 +77,7 @@ const slug = () => {
                 alertObj.error(commentState.error.message);
                 dispatch({type:CLEAR_ERRORS});
             }if(commentState.success){
+                dispatch(getBlog(slug));
                 if(commentState.commentAdded){
                     alertObj.info("Comment Added");
                     dispatch({type:COMMENT_BLOG_RESET});
@@ -198,7 +200,7 @@ const slug = () => {
                     <form className=' relative flex flex-col w-[100%] px-[20px] py-[20px] gap-[10px] border-t border-gray-700 mt-[25px]'>
                         <label for="message" class="block mb-2 text-sm font-medium text-white ">Your message</label>
                         <textarea id="message" onChange={handleChange} rows="4" class="block p-2.5 w-full text-sm text-white bg-transparent border border-gray-600 placeholder-gray-400 outline-none" placeholder="Write your thoughts here..."></textarea>
-                        <button className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[10px]' type='submit' onClick={handleSubmit}>submit</button>
+                        <button className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[10px]' type='submit' onClick={handleSubmit}>Post</button>
                     </form>
                 </div>
             </main>
