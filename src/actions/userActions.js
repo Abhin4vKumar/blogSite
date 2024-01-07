@@ -29,6 +29,7 @@ import {
 } from "@/src/constants/userConstants";
 import Cookies from 'js-cookie';
 import { baseURL , postOptions } from "../constants/configConstants";
+import { useAlert } from "react-alert";
 
 
 export const login = (loginData)=> async(dispatch)=>{
@@ -84,6 +85,35 @@ export const register = (userData) => async(dispatch)=>{
         }
     }catch(error){
         dispatch({type:REGISTER_USER_FAIL , payload:error.response.data.message});
+    }
+}
+
+export const sendOTP = (otp) => async()=>{
+    try{
+        let link = `/api/v1/verify`;
+        console.log(otp);
+        const res = await fetch(baseURL + link,{...postOptions , body:JSON.stringify({otp})});
+        const data = await res.json();
+        console.log(data);
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export const verifyOtp = (otp) => async()=>{
+    try{
+        let link = `/api/v1/verify/me`;
+        const res = await fetch(baseURL + link,{...postOptions , body:JSON.stringify({otp})});
+        const data = await res.json();
+        console.log(data);
+        if(data.success){
+            return "Email Sent";
+        }else{
+            return data.message;
+        }
+    }catch(error){
+        console.log(error);
+        return error.response.data.message;
     }
 }
 
