@@ -4,6 +4,7 @@ import {useDispatch , useSelector} from "react-redux";
 import { useAlert } from 'react-alert';
 import { login , register } from '@/src/actions/userActions';
 import { useRouter } from 'next/router';
+import { CLEAR_ERRORS } from '@/src/constants/blogConstants';
 
 function LoginPage() {
     const dispatch = useDispatch();
@@ -12,6 +13,10 @@ function LoginPage() {
     const { error, loading, isAuthenticated , user} = useSelector(
         (state) => state.user
       );
+    if(error){
+        alertobj.error(error.message);
+        dispatch({type:CLEAR_ERRORS});
+    }
     useEffect(()=>{
         if(isAuthenticated){
             console.log(user);
@@ -30,11 +35,11 @@ function LoginPage() {
   const [registerEmail , setRUEmail] = useState("");
   const handleLogin = async (e) => {
     e.preventDefault();
-    if(loginUsername == ''){
+    if(isEmpty(loginUsername)){
         alertobj.error("Enter E-mail !!");
         return;
     }
-    if(loginPassword == ''){
+    if(isEmpty(loginPassword)){
         alertobj.error("Enter Password !!");
         return;
     }
@@ -110,7 +115,7 @@ return (
 
                 <form action="#">
                     <div className="input-field">
-                        <input type="text" value={loginUsername} placeholder="Enter your email" onChange={(e) => {setLUsername(e.target.value)}} required />
+                        <input type="text" value={loginUsername} placeholder="Enter your E-mail or Username" onChange={(e) => {setLUsername(e.target.value)}} required />
                         <i className="uil uil-envelope icon"></i>
                     </div>
                     <div className="input-field">

@@ -63,7 +63,7 @@ const New = () => {
             <div className='bg-purple-700 flex flex-col items-center justify-center w-[200px] max-w-[20vw] h-[100%]'>
                 <div className={'py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' + " " + (section==0 ? "bg-zinc-900" : "")} onClick={profileClick} >Profile</div>
                 <div className={'py-[20px] w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' + " " + (section==1 ? "bg-zinc-900" : "")} onClick={myBlogsClick} >My Blogs</div>
-                {!user.user.verified?
+                {isAuthenticated && !user.user.verified?
 
                     <Link className='py-[20px] bg-red-600 w-[100%] transition-all duration-300 cursor-pointer text-center hover:bg-slate-900' href={"/verify"}>Verify Email !</Link>
                 :<></>

@@ -63,6 +63,7 @@ import {
                 isAuthenticated:false,
             };
         case LOGIN_FAIL:
+        case REGISTER_USER_FAIL:
             return {
                 ...state,
                 loading:false,
