@@ -24,9 +24,11 @@ const New = () => {
     if(!isAuthenticated){
         router.replace("/");
     }
-    if(!user.verified){
-      alertObj.error("Verify Account in order to POST a blog !");
-      router.replace("/me");
+    if(user.user){
+      if(!user.user.verified){
+        alertObj.error("Verify Account in order to POST a blog !");
+        router.replace("/me");
+      }
     }
   },[])
   useEffect(()=>{
