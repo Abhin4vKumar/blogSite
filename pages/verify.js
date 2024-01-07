@@ -45,10 +45,8 @@ export default function Verify(){
     useEffect(()=>{
         if(generalState.success){
             if(generalState.verified){
-                alertObj.info("Relogin to complete Verification !");
-                setTimeout(()=>{
-                    router.replace("/logout");
-                },5*1000);
+                dispatch(loadUser());
+                router.replace("/blogs");
                 dispatch({type:VERIFY_RESET});
             }
             if(generalState.emailSent){

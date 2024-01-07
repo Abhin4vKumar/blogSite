@@ -20,13 +20,13 @@ const New = () => {
     const [section , setSection] = useState(0);
     useEffect(()=>{
         fetchMoreData();
-        if(!isAuthenticated){
+        if(!isAuthenticated && !loading){
             router.replace("/");
         }
         dispatch(loadUser());
       },[])
     useEffect(()=>{
-        if(!isAuthenticated){
+        if(!isAuthenticated && !loading){
             router.replace("/");
         }
     },[isAuthenticated , loading , user]);

@@ -38,14 +38,14 @@ export default function Navbar(){
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/",}}>Home</Link></li>
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/about",}}>About</Link></li>
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/blogs",}}>Blogs</Link></li>
-                    {isAuthenticated?
+                    {isAuthenticated && !loading?
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/new",}}>Post</Link></li>
                     :<></>
                     }
                 </ul>
             </div>
             <div className='navLogin h-[100%] flex items-center cursor-pointer'>
-                {!isAuthenticated?
+                {!isAuthenticated && !loading?
                     <Link href={`/login`}>
                     <button className="flex bg-transparent bg-none text-white px-[20px] items-center justify-center h-[60px] outline-none mr-[20px] transition-all duration-300 ease-linear cursor-pointer hover:bg-purple-500 ">Login</button>
                 </Link>

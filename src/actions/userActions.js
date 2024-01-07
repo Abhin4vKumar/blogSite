@@ -77,7 +77,7 @@ export const logout = () => async(dispatch) =>{
 
 export const loadUser = ()=>async(dispatch)=>{
     try{
-        let link = '/api/v1/me';
+        let link = `/api/v1/me?token=${Cookies.get('token')}`;
         const res = await fetch(baseURL + link);
         const data = await res.json();
         if(data.success){
