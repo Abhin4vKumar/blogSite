@@ -38,7 +38,6 @@ export default function Verify(){
                 dispatch(loadUser());
                 router.replace("/blogs");
             }
-            console.log(userState);
         }else{
             router.replace("/");
         }
@@ -67,7 +66,6 @@ export default function Verify(){
             setTC(count);
             if (count === 0) {
                 clearInterval(timer);
-                console.log("Time's up!");
                 setLoading(false);
             }
         }, 1000);
@@ -84,7 +82,6 @@ export default function Verify(){
         const otpc = Math.floor((Math.random()*1000000)+1)
         setOTP(otpc);
         dispatch(sendOTP(otpc));
-        console.log(otpc);
     }
   return (
     <>
