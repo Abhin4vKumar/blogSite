@@ -43,6 +43,7 @@ import {
         case LOGIN_REQUEST:
         case REGISTER_USER_REQUEST:
         case LOAD_USER_REQUEST:
+        case RESET_PASSWORD_REQUEST:
             return {
                 loading : true,
                 isAuthenticated: false,
@@ -50,6 +51,7 @@ import {
         case LOGIN_SUCCESS:
         case REGISTER_USER_SUCCESS:
         case LOAD_USER_SUCCESS:
+        case RESET_PASSWORD_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -64,6 +66,7 @@ import {
             };
         case LOGIN_FAIL:
         case REGISTER_USER_FAIL:
+        case RESET_PASSWORD_FAIL:
             return {
                 ...state,
                 loading:false,

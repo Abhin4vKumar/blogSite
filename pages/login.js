@@ -2,7 +2,7 @@ import Head from 'next/head';
 import React, { Fragment , useState  , useEffect} from 'react';
 import {useDispatch , useSelector} from "react-redux";
 import { useAlert } from 'react-alert';
-import { login , register } from '@/src/actions/userActions';
+import { forgotPassword, login , register } from '@/src/actions/userActions';
 import { useRouter } from 'next/router';
 import { CLEAR_ERRORS } from '@/src/constants/blogConstants';
 
@@ -13,6 +13,7 @@ function LoginPage() {
     const { error, loading, isAuthenticated , user} = useSelector(
         (state) => state.user
       );
+    const emailState = useSelector((state)=>state.general);
     if(error){
         alertobj.error(error.message);
         dispatch({type:CLEAR_ERRORS});
@@ -23,6 +24,15 @@ function LoginPage() {
             router.replace("/blogs");
         }
     } , [isAuthenticated])
+    useEffect(()=>{
+        if(!emailState.loading){
+            if(emailState.success){
+                if(emailState.emailSent){
+                    alertobj.info("Email For Password Recovery has been Sent !");
+                }
+            }
+        }
+    },[emailState]);
   const [loginUsername, setLUsername] = useState('');
   const [loginPassword, setLPassword] = useState('');
   const [name , setName] = useState('');
@@ -36,7 +46,7 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     if(isEmpty(loginUsername)){
-        alertobj.error("Enter E-mail !!");
+        alertobj.error("Enter E-mail / Username !!");
         return;
     }
     if(isEmpty(loginPassword)){
@@ -97,6 +107,16 @@ function LoginPage() {
     e.preventDefault();
     setAS('');
   };
+
+  const handleForgotPassword = (e)=>{
+    e.preventDefault();
+    if(isEmpty(loginUsername)){
+        alertobj.error("Enter E-mail / Username !!");
+        return;
+    }
+    dispatch(forgotPassword(loginUsername));
+    alertobj.info("Your Request has been submitted !");
+  }
 return (
     <Fragment>
         <Head>
@@ -134,7 +154,7 @@ return (
                             <label for="logCheck"   className="text">Remember me</label>
                         </div>
                         
-                        <a className="text">Forgot password?</a>
+                        <a className="text" onClick={handleForgotPassword}>Forgot password?</a>
                     </div>
 
                     <div className="input-field button">

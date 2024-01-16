@@ -158,3 +158,39 @@ export const updateProfile = (userData) => async(dispatch)=>{
         dispatch({type:UPDATE_PROFILE_FAIL , payload:error.response.data.message});
     }
 }
+
+export const forgotPassword = (email) => async(dispatch)=>{
+    try{
+        dispatch({type:EMAIL_REQUEST});
+        let link = '/api/v1/password/forgot';
+        const res = await fetch(baseURL + link , {...postOptions , body:JSON.stringify({email})});
+        const data = await res.json();
+        if(data.success){
+            dispatch({type:EMAIL_SUCCESS,payload:data});
+        }else{
+            dispatch({type:EMAIL_FAIL , payload:data});
+        }
+    }catch(error){
+        dispatch({type:EMAIL_FAIL , payload:error.response.data.message});
+    }
+}
+
+
+export const resetPassword = (pass , cpass , slug) => async(dispatch)=>{
+    try{
+        dispatch({type:RESET_PASSWORD_REQUEST});
+        let link = '/api/v1/password/reset/' + slug;
+        const res = await fetch(baseURL + link , {...postOptions , body:JSON.stringify({
+            password:pass,
+            confirmPassword:cpass
+        })});
+        const data = await res.json();
+        if(data.success){
+            dispatch({type:RESET_PASSWORD_SUCCESS , payload:data});
+        }else{
+            dispatch({type:RESET_PASSWORD_FAIL , payload:data});
+        }
+    }catch(error){
+        dispatch({type:RESET_PASSWORD_FAIL , payload:error.response.data.message});
+    }
+}

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link  from 'next/link'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import { getBlogs } from './actions/blogActions';
 
 
 export default function Navbar(){
+    const dispatch = useDispatch();
     const {loading , isAuthenticated , user} = useSelector((state) => (state.user));
     const appRef = useRef();
     const setNav = ()=>{
@@ -21,6 +23,9 @@ export default function Navbar(){
         }catch(error){
             console.error(error);
         }
+    };
+    const handleClick = (e)=>{
+        dispatch(getBlogs());
     }
     useEffect(()=>{
         setNav();
@@ -37,7 +42,7 @@ export default function Navbar(){
                 <ul className={"flex list-none items-center gap-0 h-[100%]"}>
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/",}}>Home</Link></li>
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/about",}}>About</Link></li>
-                    <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/blogs",}}>Blogs</Link></li>
+                    <li><Link onClick={handleClick} className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/blogs",}}>Blogs</Link></li>
                     {isAuthenticated && !loading?
                     <li><Link className='flex px-[20px] h-[60px] text-center items-center justify-center gap-[10px] hover:bg-white hover:text-black transition-all duration-300 ease-linear border-b-2 border-transparent' href={{pathname:"/new",}}>Post</Link></li>
                     :<></>

@@ -65,7 +65,7 @@
 }
 
 .logincontainer.active .forms{
-    height: 560px;
+    height: 650px;
 }
 .logincontainer.active.heightClass .forms{
     height: 750px;
