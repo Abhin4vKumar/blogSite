@@ -11,6 +11,7 @@ import {useDispatch , useSelector} from "react-redux";
 import { getBlog, getBlogs } from '@/src/actions/blogActions';
 import { CLEAR_ERRORS, COMMENT_BLOG_RESET, DELETE_BLOG_RESET, DEL_COMMENT_BLOG_RESET, UPVOTE_BLOG_RESET } from '@/src/constants/blogConstants';
 import { upVote , comment as cmnt , deleteComment , deleteBlog} from '@/src/actions/blogActions';
+import { resetPassword } from '@/src/actions/userActions';
 
 const inter = Inter({ subsets: ['latin'] })
 const slug = () => {
@@ -33,7 +34,7 @@ const slug = () => {
             alertObj.error("Passwords are different !");
         }
         if(pass == cpass){
-            // dispatch();
+            dispatch(resetPassword(pass , cpass , slug));
         }
     }
     const [pass,setPass] = useState();
