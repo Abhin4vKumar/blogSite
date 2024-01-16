@@ -67,7 +67,7 @@ const slug = () => {
                     <input type='text' onChange={handlePchange} className="block p-2.5 w-full text-sm text-white bg-transparent border border-gray-600 placeholder-gray-400 outline-none"/>
                     <label for="message" className="block mb-2 text-sm font-medium text-white ">Confirm Password <i className='text-red-600'>*</i></label>
                     <input type='text'  onChange={handleCPchange} className="block p-2.5 w-full text-sm text-white bg-transparent border border-gray-600 placeholder-gray-400 outline-none"/>
-                    <button type='submit' className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[10px]' >Reset</button>
+                    <button type='submit' className='transition-colors duration-300 bottom-[0px] border border-gray-700 right-[0px] hover:bg-purple-500 hover:text-black px-[20px] py-[10px]' onClick={handleSubmit}>Reset</button>
                 </form>
             </div>
         </div>
