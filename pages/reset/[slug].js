@@ -46,13 +46,15 @@ const slug = () => {
     }
     const userState = useSelector((state)=>{state.user});
     useEffect(()=>{
-        if(!userState.loading){
-            if(userState.isAuthenticated){
-                router.replace('/');
-            }
-            if(userState.error){
-                alertObj.error(userState.error);
-                dispatch({CLEAR_ERRORS});
+        if(userState){
+            if(!userState.loading){
+                if(userState.isAuthenticated){
+                    router.replace('/');
+                }
+                if(userState.error){
+                    alertObj.error(userState.error);
+                    dispatch({CLEAR_ERRORS});
+                }
             }
         }
     },[userState]);
