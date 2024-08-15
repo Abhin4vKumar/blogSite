@@ -1,4 +1,4 @@
-export const baseURL = 'https://blog-site-server-gold.vercel.app';
+export const baseURL = 'https://blogsite-server-krin.onrender.com';
 export const postOptions = {
     method:"POST",
     headers:{"Content-Type":"application/json"},
